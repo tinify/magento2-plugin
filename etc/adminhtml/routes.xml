@@ -1,0 +1,7 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="admin">
+        <route id="tinify_compress_images" frontName="tinify_compress_images">
+            <module name="Tinify_Compress_Images" />
+        </route>
+    </router>
+</config>

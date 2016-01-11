@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="tinify" translate="label" sortOrder="10">
+            <label>Tinify</label>
+        </tab>
+        <section id="tinify_compress_images" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>PNG and JPEG compression</label>
+            <tab>tinify</tab>
+            <resource>Tinify_Compress_Images::tinify_compress_images</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Configure PNG and JPEG image compression</label>
+                <field id="key" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>TinyPNG API key</label>
+                    <comment><![CDATA[Visit <a href="https://tinypng.com/developers" target="_blank">TinyPNG Developer section</a> to to get an API key.]]></comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
