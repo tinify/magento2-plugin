@@ -27,6 +27,14 @@ composer install
 vendor/bin/phpunit
 ```
 
+### Installing plugin from Git in Magento
+
+```
+composer config repositories.tinify vcs https://github.com/tinify/magento2-plugin
+composer require tinify/magento2
+bin/magento setup:upgrade
+```
+
 ## License
 
 This software is licensed under the MIT License. [View the license](LICENSE).
