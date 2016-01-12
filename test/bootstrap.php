@@ -43,7 +43,7 @@ class SqlImporter
     public function import($file)
     {
         $name = "magento2_test";
-        exec("mysql -u root -e 'drop database if exists {$name}; create database {$name}'", $output, $result);
+        exec("mysql -h 127.0.0.1 -u root -e 'drop database if exists {$name}; create database {$name}'", $output, $result);
         if ($result !== 0) exit($result);
 
         $sql = $this->fs->fileGetContents(__DIR__ . "/fixtures/" . $file);
@@ -117,7 +117,7 @@ abstract class IntegrationTestCase extends TestCase
                 "db" => [
                     "connection" => [
                         "default" => [
-                            "host" => "localhost",
+                            "host" => "127.0.0.1",
                             "dbname" => "magento2_test",
                             "username" => "root",
                             "password" => "",
