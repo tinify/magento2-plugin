@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0c8d04c5a6d590d1621c6a2c0347a26f",
-    "content-hash": "34159180c78f92e8bb0999bbef6bb437",
+    "hash": "759a61620d465c7b70868e955b48ba1a",
+    "content-hash": "c45f151b7cfc257676ee129ed2983a30",
     "packages": [
         {
             "name": "tinify/tinify",
