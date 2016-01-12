@@ -20,12 +20,11 @@ class OptimizableImage
 
     public function getUrl()
     {
+        $dir = $this->config->getMediaDirectory();
         $path = $this->getOptimizedPath();
 
         /* Fall back to unoptimized version if optimized one does not exist. */
-        if (!$this->config->getMediaDirectory()->isFile($path)) {
-            $path = $this->getUnoptimizedPath();
-        }
+        if (!$dir->isFile($path)) $path = $this->getUnoptimizedPath();
 
         return $this->config->getMediaUrl($path);
     }
@@ -35,11 +34,12 @@ class OptimizableImage
         if (!$this->configure()) return false;
 
         $dir = $this->config->getMediaDirectory();
-        $source = $dir->readFile($this->getUnoptimizedPath());
+        $path = $this->getOptimizedPath();
 
-        $dir->writeFile($this->getOptimizedPath(),
-            Tinify\fromBuffer($source)->toBuffer()
-        );
+        if (!$dir->isFile($path)) {
+            $source = $dir->readFile($this->getUnoptimizedPath());
+            $dir->writeFile($path, Tinify\fromBuffer($source)->toBuffer());
+        }
 
         return true;
     }

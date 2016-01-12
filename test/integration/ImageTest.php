@@ -49,8 +49,21 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
         $this->image->saveFile();
 
         $sha = "d519570140157e41611e39513acca2c79ab89b301fcb5e76178db49bc8f26fab";
-        $path = $this->getVfs() . "/media/catalog/product/optimized/d/5/{$sha}.png";
-        $this->assertEquals($this->pngOptimal, file_get_contents($path));
+        $path = "catalog/product/optimized/d/5/{$sha}.png";
+        $this->assertEquals($this->pngOptimal, $this->dir->readFile($path));
+    }
+
+    public function testSaveDoesNotOverwriteOptimizedVersion()
+    {
+        $sha = "d519570140157e41611e39513acca2c79ab89b301fcb5e76178db49bc8f26fab";
+        $path = "catalog/product/optimized/d/5/{$sha}.png";
+        $this->dir->writeFile($path, "previous binary");
+
+        $this->image->setDestinationSubdir("my_image_type");
+        $this->image->setBaseFile("example.png");
+        $this->image->saveFile();
+
+        $this->assertEquals("previous binary", $this->dir->readFile($path));
     }
 
     public function testSaveCreatesOptimizedVersionRegardlessOfQuality()

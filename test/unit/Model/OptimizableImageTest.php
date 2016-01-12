@@ -158,4 +158,38 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
 
         $this->optimizableImage->optimize();
     }
+
+    public function testOptimizeDoesNothingIfCompressedFileExists()
+    {
+        $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
+
+        $this->image
+            ->method("getNewFile")
+            ->willReturn($file);
+
+        $this->config
+            ->method("getPathPrefix")
+            ->willReturn("catalog/product/optimized");
+
+        $this->config
+            ->method("getKey")
+            ->willReturn("my_valid_key");
+
+        $this->mediaDir
+            ->method("isFile")
+            ->willReturn(true);
+
+        $path = $this->config->getMediaPath($file);
+        mkdir(dirname($path), 0777, true);
+        file_put_contents($path, "suboptimial image");
+
+        $path = "catalog/product/optimized/" .
+            "5/5/556481349e6e45717387cfe9a53981057e4e9be90532c7cf2d0aa7aaeb5eaf52.jpg";
+
+        $this->mediaDir
+            ->expects($this->never())
+            ->method("writeFile");
+
+        $this->optimizableImage->optimize();
+    }
 }
