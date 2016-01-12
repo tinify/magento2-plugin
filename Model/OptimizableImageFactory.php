@@ -7,7 +7,7 @@ use Magento\Catalog\Model\Product\Image;
 
 class OptimizableImageFactory
 {
-    const INSTANCE = __NAMESPACE__ . "\\OptimizableImage";
+    const INSTANCE = "Tinify\Magento\Model\OptimizableImage";
 
     protected $objectManager;
 
