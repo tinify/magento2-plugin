@@ -43,7 +43,9 @@ class SqlImporter
     public function import($file)
     {
         $name = "magento2_test";
-        exec("mysql -u root -e 'drop database if exists {$name}; create database {$name}'");
+        exec("mysql -u root -e 'drop database if exists {$name}; create database {$name}'", $output, $result);
+        if ($result !== 0) exit($result);
+
         $sql = $this->fs->fileGetContents(__DIR__ . "/fixtures/" . $file);
         $this->rc->getConnection()->exec($sql);
     }
