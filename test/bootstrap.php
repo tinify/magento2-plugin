@@ -29,28 +29,6 @@ $kernel->init([
 /* TODO: Figure out how this class should be autoloaded? */
 require_once(BP . "/lib/internal/Cm/Cache/Backend/File.php");
 
-class SqlImporter
-{
-    protected $fs;
-    protected $rc;
-
-    public function __construct(File $fs, ResourceConnection $rc)
-    {
-        $this->fs = $fs;
-        $this->rc = $rc;
-    }
-
-    public function import($file)
-    {
-        $name = "magento2_test";
-        exec("mysql -h 127.0.0.1 -u root -e 'drop database if exists {$name}; create database {$name}'", $output, $result);
-        if ($result !== 0) exit($result);
-
-        $sql = $this->fs->fileGetContents(__DIR__ . "/fixtures/" . $file);
-        $this->rc->getConnection()->exec($sql);
-    }
-}
-
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
     protected $vfs;
@@ -85,8 +63,8 @@ abstract class IntegrationTestCase extends TestCase
     protected function setUp()
     {
         if (!self::$imported) {
-            $importer = $this->getObjectManager()->get("Tinify\Magento\SqlImporter");
-            $importer->import("magento.sql");
+            exec("mysql -u root < test/fixtures/magento.sql", $output, $result);
+            if ($result !== 0) exit($result);
             self::$imported = true;
         }
     }

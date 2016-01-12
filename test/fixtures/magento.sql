@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS `magento2_test`;
+CREATE DATABASE `magento2_test`;
 USE `magento2_test`;
 -- MySQL dump 10.13  Distrib 5.7.9, for osx10.9 (x86_64)
 --
