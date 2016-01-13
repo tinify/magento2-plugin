@@ -54,6 +54,14 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     {
         return new MockObjectManager($this);
     }
+
+    protected function setProperty($object, $name, $value)
+    {
+        $reflection = new \ReflectionClass($object);
+        $property = $reflection->getProperty($name);
+        $property->setAccessible(true);
+        $property->setValue($object, $value);
+    }
 }
 
 abstract class IntegrationTestCase extends TestCase
@@ -114,10 +122,11 @@ abstract class IntegrationTestCase extends TestCase
                     "Magento_MediaStorage" => 1,
                     "Tinify_Compress_Images" => 1,
                 ],
-            ]
+                ]
         ];
 
         $objectManager = $factory->create($config);
+
         return $objectManager;
     }
 }

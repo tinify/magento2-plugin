@@ -5,4 +5,20 @@
     <type name="Magento\Catalog\Model\Product\Image">
         <plugin name="Tinify_Compress_Images::optimize_catalog_images" type="Tinify\Magento\Plugin\ImagePlugin" sortOrder="10"/>
     </type>
+
+    <type name="Tinify\Magento\Model\OptimizableImage">
+        <arguments>
+            <argument name="logger" xsi:type="object">Tinify\Magento\Logger</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Tinify\Magento\Logger" type="Monolog\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">tinify</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Magento\Framework\Logger\Handler\System</item>
+                <item name="debug" xsi:type="object">Magento\Framework\Logger\Handler\Debug</item>
+            </argument>
+        </arguments>
+    </virtualType>
 </config>

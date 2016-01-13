@@ -11,11 +11,17 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
     {
         parent::setUp();
 
-        $this->getObjectManager()->create(
+        $logHandler = $this->getObjectManager()->get(
+            "Magento\Framework\Logger\Handler\System"
+        );
+        $this->setProperty($logHandler, "url", $this->getVfs() . "/system.log");
+
+
+        $this->getObjectManager()->get(
             "Magento\Framework\App\Config\MutableScopeConfigInterface"
         )->setValue(Model\Config::KEY_PATH, "my_api_key");
 
-        $this->dir = $this->getObjectManager()->create(
+        $this->dir = $this->getObjectManager()->get(
             "Tinify\Magento\Model\Config"
         )->getMediaDirectory();
 
@@ -103,7 +109,7 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
         $this->assertEquals($image1->getUrl(), $image2->getUrl());
     }
 
-    public function testSaveDoesNotFailOnCompressionError()
+    public function testSaveLogsExceptionOnCompressionError()
     {
         AspectMock\Test::double("Tinify\Source", [
             "fromBuffer" => function () {
@@ -114,8 +120,13 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
         $this->image->setDestinationSubdir("my_image_type");
         $this->image->setBaseFile("example.png");
         $this->image->saveFile();
-    }
 
+        $log = file_get_contents($this->getVfs() . "/system.log");
+        $this->assertContains(
+            "tinify.ERROR: exception 'Tinify\Exception' with message 'error'",
+            $log
+        );
+    }
 
     public function testGetUrlReturnsOptimizedVersion()
     {
@@ -130,7 +141,7 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
 
     public function testGetUrlReturnsCachedVersionWhenKeyIsUnset()
     {
-        $this->getObjectManager()->create(
+        $this->getObjectManager()->get(
             "Magento\Framework\App\Config\MutableScopeConfigInterface"
         )->setValue(Model\Config::KEY_PATH, "  ");
 
