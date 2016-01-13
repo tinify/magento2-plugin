@@ -29,6 +29,8 @@ vendor/bin/phpunit
 
 ### Installing plugin from Git in Magento
 
+Make sure to set `"minimum-stability": "dev"` in `composer.json` before you start.
+
 ```
 composer config repositories.tinify vcs https://github.com/tinify/magento2-plugin
 composer require tinify/magento2
