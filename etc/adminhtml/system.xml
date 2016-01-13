@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <section id="tinify_compress_images" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="tinify_compress_images" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
             <label>Image Compression</label>
             <tab>general</tab>
             <resource>Tinify_Compress_Images::tinify_compress_images</resource>
@@ -12,22 +12,22 @@
                     <comment><![CDATA[Visit <a href="https://tinypng.com/developers" target="_blank">TinyPNG Developer section</a> to to get an API key.]]></comment>
                 </field>
             </group>
-            <group id="types" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="types" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>Image Types to Compress</label>
                 <comment>Choose which generated image types should be optimized with TinyPNG or TinyJPG.</comment>
-                <field id="base" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="base" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Base Images</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="small" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="small" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Small Images</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="thumbnail" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="thumbnail" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Thumbnails</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="swatch" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="swatch" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Swatches</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
