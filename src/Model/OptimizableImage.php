@@ -83,7 +83,7 @@ class OptimizableImage
             return true;
         }
 
-        $key = trim($this->config->getKey());
+        $key = $this->config->getKey();
         if (empty($key)) {
             return false;
         }

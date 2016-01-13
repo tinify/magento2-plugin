@@ -116,7 +116,7 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
 
         $this->config
             ->method("getKey")
-            ->willReturn("  ");
+            ->willReturn("");
 
         $this->assertEquals(false, $this->optimizableImage->optimize());
     }
@@ -127,7 +127,7 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
 
         $this->config
             ->method("getKey")
-            ->willReturn("  ");
+            ->willReturn("");
 
         $this->logger
             ->expects($this->once())

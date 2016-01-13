@@ -31,7 +31,7 @@ class Config
 
     public function getKey()
     {
-        return $this->config->getValue(self::KEY_PATH);
+        return trim($this->config->getValue(self::KEY_PATH));
     }
 
     public function getMagentoId()

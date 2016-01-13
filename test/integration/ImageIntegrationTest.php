@@ -16,14 +16,15 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
         );
         $this->setProperty($logHandler, "url", $this->getVfs() . "/system.log");
 
-
-        $this->getObjectManager()->get(
+        $scopeConfig = $this->getObjectManager()->get(
             "Magento\Framework\App\Config\MutableScopeConfigInterface"
-        )->setValue(Model\Config::KEY_PATH, "my_api_key");
+        );
+        $scopeConfig->setValue(Model\Config::KEY_PATH, "my_api_key");
 
-        $this->dir = $this->getObjectManager()->get(
+        $config = $this->getObjectManager()->get(
             "Tinify\Magento\Model\Config"
-        )->getMediaDirectory();
+        );
+        $this->dir = $config->getMediaDirectory();
 
         $this->dir->create();
 

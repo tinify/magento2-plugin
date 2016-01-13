@@ -52,14 +52,14 @@ class ConfigTest extends \Tinify\Magento\TestCase
         );
     }
 
-    public function testGetKeyReturnsKey()
+    public function testGetKeyReturnsTrimmedKey()
     {
         $my_key = "there_are_many_like_it_but_this_one_is_mine";
 
         $this->coreConfig
             ->method("getValue")
             ->with("tinify_compress_images/general/key")
-            ->willReturn($my_key);
+            ->willReturn("  " . $my_key . "   ");
 
         $this->assertEquals($my_key, $this->config->getKey());
     }

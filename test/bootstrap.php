@@ -28,6 +28,7 @@ $kernel->init([
 
 /* TODO: Figure out how this class should be autoloaded? */
 require_once(BP . "/lib/internal/Cm/Cache/Backend/File.php");
+require_once(BP . "/app/functions.php");
 
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
@@ -77,6 +78,20 @@ abstract class IntegrationTestCase extends TestCase
         }
     }
 
+    protected function loadArea($code)
+    {
+        $state = $this->getObjectManager()->get(
+            "Magento\Framework\App\State"
+        );
+
+        $configLoader = $this->getObjectManager()->get(
+            "Magento\Framework\ObjectManager\ConfigLoaderInterface"
+        );
+
+        $state->setAreaCode($code);
+        $this->getObjectManager()->configure($configLoader->load($code));
+    }
+
     protected function constructObjectManager()
     {
         global $autoloader;
@@ -116,6 +131,7 @@ abstract class IntegrationTestCase extends TestCase
                     ],
                 ],
                 "modules" => [
+                    "Magento_Backend" => 1,
                     "Magento_Store" => 1,
                     "Magento_Theme" => 1,
                     "Magento_Developer" => 1,
