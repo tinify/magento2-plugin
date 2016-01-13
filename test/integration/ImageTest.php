@@ -111,9 +111,10 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
 
     public function testSaveLogsExceptionOnCompressionError()
     {
+        $error = new Tinify\Exception("error");
         AspectMock\Test::double("Tinify\Source", [
-            "fromBuffer" => function () {
-                throw new Tinify\Exception("error");
+            "fromBuffer" => function () use ($error) {
+                throw $error;
             }
         ]);
 
@@ -123,7 +124,7 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
 
         $log = file_get_contents($this->getVfs() . "/system.log");
         $this->assertContains(
-            "tinify.ERROR: exception 'Tinify\Exception' with message 'error'",
+            "tinify.ERROR: {$error}",
             $log
         );
     }
