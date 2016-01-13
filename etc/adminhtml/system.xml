@@ -27,7 +27,7 @@
                     <label>Thumbnails</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="swatche" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="swatch" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Swatch Images</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
