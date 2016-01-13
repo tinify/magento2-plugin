@@ -18,6 +18,8 @@ Got questions or feedback? Let us know! Contact us at support@tinypng.com.
 
 ### Prerequisites
 
+* PHP 5.5 or newer.
+* MySQL 5.6 or newer (integration tests).
 * Composer (https://getcomposer.org/download/).
 
 ### Running the unit tests
