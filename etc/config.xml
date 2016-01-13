@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Tinify_Compress_Images:etc/config.xsd">
+    <default>
+        <tinify_compress_images>
+            <types>
+                <base>1</base>
+                <small>1</small>
+                <thumbnail>1</thumbnail>
+                <swatch>1</swatch>
+            </types>
+        </tinify_compress_images>
+    </default>
+</config>
