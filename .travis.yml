@@ -15,7 +15,9 @@ matrix:
   - php: hhvm
   - php: nightly
 before_script: composer install
-script: vendor/bin/phpunit
+script:
+- vendor/bin/phpunit
+- vendor/bin/phpcs --standard=PSR2 src test/integration test/unit
 notifications:
   email: false
   slack:
