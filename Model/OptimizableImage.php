@@ -5,6 +5,7 @@ namespace Tinify\Magento\Model;
 use Tinify;
 use Tinify\Magento\Model\Config;
 use Magento\Catalog\Model\Product\Image;
+use Magento\Swatches\Model\Swatch;
 
 class OptimizableImage
 {
@@ -24,14 +25,22 @@ class OptimizableImage
         $path = $this->getOptimizedPath();
 
         /* Fall back to unoptimized version if optimized one does not exist. */
-        if (!$dir->isFile($path)) $path = $this->getUnoptimizedPath();
+        if (!$dir->isFile($path)) {
+            $path = $this->getUnoptimizedPath();
+        }
 
         return $this->config->getMediaUrl($path);
     }
 
     public function optimize()
     {
-        if (!$this->configure()) return false;
+        if (!$this->optimizable()) {
+            return false;
+        }
+
+        if (!$this->configure()) {
+            return false;
+        }
 
         $dir = $this->config->getMediaDirectory();
         $path = $this->getOptimizedPath();
@@ -44,12 +53,25 @@ class OptimizableImage
         return true;
     }
 
+    public function optimizable()
+    {
+        $type = $this->image->getDestinationSubdir();
+        return (
+            $type !== Swatch::SWATCH_IMAGE_NAME &&
+            $type !== Swatch::SWATCH_THUMBNAIL_NAME
+        );
+    }
+
     protected function configure()
     {
-        if ($this->configured) return true;
+        if ($this->configured) {
+            return true;
+        }
 
         $key = trim($this->config->getKey());
-        if (empty($key)) return false;
+        if (empty($key)) {
+            return false;
+        }
 
         Tinify\setKey($key);
         Tinify\setAppIdentifier($this->config->getMagentoId());

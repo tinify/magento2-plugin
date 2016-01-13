@@ -53,6 +53,17 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
         $this->assertEquals($this->pngOptimal, $this->dir->readFile($path));
     }
 
+    public function testSaveDoesNotCreateOptimizedSwatchVersion()
+    {
+        $this->image->setDestinationSubdir("swatch_thumb");
+        $this->image->setBaseFile("example.png");
+        $this->image->saveFile();
+
+        $sha = "d519570140157e41611e39513acca2c79ab89b301fcb5e76178db49bc8f26fab";
+        $path = "catalog/product/optimized/d/5/{$sha}.png";
+        $this->assertEquals(false, $this->dir->isFile($path));
+    }
+
     public function testSaveDoesNotOverwriteOptimizedVersion()
     {
         $sha = "d519570140157e41611e39513acca2c79ab89b301fcb5e76178db49bc8f26fab";
@@ -91,7 +102,6 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
 
         $this->assertEquals($image1->getUrl(), $image2->getUrl());
     }
-
 
     public function testGetUrlReturnsOptimizedVersion()
     {

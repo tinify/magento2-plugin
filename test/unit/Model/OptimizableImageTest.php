@@ -113,13 +113,20 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
     {
         $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
 
-        $this->image
-            ->method("getNewFile")
-            ->willReturn($file);
-
         $this->config
-            ->method("getPathPrefix")
-            ->willReturn("catalog/product/optimized");
+            ->method("getKey")
+            ->willReturn("  ");
+
+        $this->assertEquals(false, $this->optimizableImage->optimize());
+    }
+
+    public function testOptimizeReturnsIfImageIsSwatch()
+    {
+        $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
+
+        $this->image
+            ->method("getDestinationSubdir")
+            ->willReturn("swatch_image");
 
         $this->config
             ->method("getKey")
