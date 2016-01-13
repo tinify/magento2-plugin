@@ -7,10 +7,12 @@ use Magento\Framework\App\Config\ScopeConfigInterface as ScopeConfig;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\ProductMetadataInterface as MagentoInfo;
 use Magento\Framework\Filesystem;
+use Magento\Swatches\Model\Swatch;
 
 class Config
 {
     const KEY_PATH = "tinify_compress_images/general/key";
+    const TYPES_PATH = "tinify_compress_images/types";
 
     protected $magentoInfo;
     protected $config;
@@ -27,6 +29,27 @@ class Config
         $this->config = $config;
         $this->mediaConfig = $mediaConfig;
         $this->mediaDirectory = $filesystem->getDirectoryWrite(DirectoryList::MEDIA);
+    }
+
+    public function isOptimizableType($type)
+    {
+        switch (strtolower($type)) {
+            case "thumbnail":
+                $type = "thumbnail";
+                break;
+            case "small_image":
+                $type = "small";
+                break;
+            case "swatch_thumb":
+            case "swatch_image":
+                $type = "swatch";
+                break;
+            case "image":
+            default:
+                $type = "base";
+        }
+
+        return $this->config->isSetFlag(self::TYPES_PATH . "/" . $type);
     }
 
     public function getKey()

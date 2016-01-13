@@ -115,15 +115,23 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
         $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
 
         $this->config
+            ->method("isOptimizableType")
+            ->willReturn(true);
+
+        $this->config
             ->method("getKey")
             ->willReturn("");
 
-        $this->assertEquals(false, $this->optimizableImage->optimize());
+        $this->assertFalse($this->optimizableImage->optimize());
     }
 
     public function testOptimizeLogsMessageIfKeyIsUnset()
     {
         $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
+
+        $this->config
+            ->method("isOptimizableType")
+            ->willReturn(true);
 
         $this->config
             ->method("getKey")
@@ -137,28 +145,36 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
         $this->optimizableImage->optimize();
     }
 
-    public function testOptimizeReturnsIfImageIsSwatch()
+    public function testOptimizeReturnsIfImageIsNotOptimizable()
     {
         $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
 
-        $this->image
-            ->method("getDestinationSubdir")
-            ->willReturn("swatch_image");
+        $this->config
+            ->method("isOptimizableType")
+            ->willReturn(false);
 
-        $this->assertEquals(false, $this->optimizableImage->optimize());
+        $this->config
+            ->method("getKey")
+            ->willReturn("my_valid_key");
+
+        $this->assertFalse($this->optimizableImage->optimize());
     }
 
-    public function testOptimizeLogsMessageIfImageIsSwatch()
+    public function testOptimizeLogsMessageIfImageIsNotOptimizable()
     {
         $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
-
-        $this->image
-            ->method("getDestinationSubdir")
-            ->willReturn("swatch_image");
 
         $this->image
             ->method("getNewFile")
             ->willReturn($file);
+
+        $this->config
+            ->method("isOptimizableType")
+            ->willReturn(false);
+
+        $this->config
+            ->method("getKey")
+            ->willReturn("my_valid_key");
 
         $this->logger
             ->expects($this->once())
@@ -179,6 +195,10 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
         $this->config
             ->method("getPathPrefix")
             ->willReturn("catalog/product/optimized");
+
+        $this->config
+            ->method("isOptimizableType")
+            ->willReturn(true);
 
         $this->config
             ->method("getKey")
@@ -210,6 +230,10 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
         $this->config
             ->method("getPathPrefix")
             ->willReturn("catalog/product/optimized");
+
+        $this->config
+            ->method("isOptimizableType")
+            ->willReturn(true);
 
         $this->config
             ->method("getKey")
@@ -247,6 +271,10 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
         $this->image
             ->method("getNewFile")
             ->willReturn($file);
+
+        $this->config
+            ->method("isOptimizableType")
+            ->willReturn(true);
 
         $this->config
             ->method("getKey")

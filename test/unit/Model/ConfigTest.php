@@ -52,6 +52,46 @@ class ConfigTest extends \Tinify\Magento\TestCase
         );
     }
 
+    public function testIsOptimizableTypeReturnsTrueIfTypeIsEnabled()
+    {
+        $this->coreConfig
+            ->method("isSetFlag")
+            ->with("tinify_compress_images/types/thumbnail")
+            ->willReturn(true);
+
+        $this->assertTrue($this->config->isOptimizableType("thumbnail"));
+    }
+
+    public function testIsOptimizableTypeReturnsFalseIfTypeIsDisabled()
+    {
+        $this->coreConfig
+            ->method("isSetFlag")
+            ->with("tinify_compress_images/types/thumbnail")
+            ->willReturn(false);
+
+        $this->assertFalse($this->config->isOptimizableType("thumbnail"));
+    }
+
+    public function testIsOptimizableTypeReturnsFalseIfAliasedTypeIsEnabled()
+    {
+        $this->coreConfig
+            ->method("isSetFlag")
+            ->with("tinify_compress_images/types/swatch")
+            ->willReturn(true);
+
+        $this->assertTrue($this->config->isOptimizableType("swatch_thumb"));
+    }
+
+    public function testIsOptimizableTypeReturnsFalseIfAliasedTypeIsDisabled()
+    {
+        $this->coreConfig
+            ->method("isSetFlag")
+            ->with("tinify_compress_images/types/swatch")
+            ->willReturn(false);
+
+        $this->assertFalse($this->config->isOptimizableType("swatch_thumb"));
+    }
+
     public function testGetKeyReturnsTrimmedKey()
     {
         $my_key = "there_are_many_like_it_but_this_one_is_mine";

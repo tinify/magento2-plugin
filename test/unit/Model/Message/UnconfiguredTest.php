@@ -31,7 +31,7 @@ class UnconfiguredTest extends \Tinify\Magento\TestCase
             ->method("getKey")
             ->willReturn("");
 
-        $this->assertEquals(true, $this->message->isDisplayed());
+        $this->assertTrue($this->message->isDisplayed());
     }
 
     public function testIsDisplayedReturnsFalseIfKeyIsSet()
@@ -40,6 +40,6 @@ class UnconfiguredTest extends \Tinify\Magento\TestCase
             ->method("getKey")
             ->willReturn("this_is_my_key");
 
-        $this->assertEquals(false, $this->message->isDisplayed());
+        $this->assertFalse($this->message->isDisplayed());
     }
 }

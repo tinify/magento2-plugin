@@ -6,7 +6,6 @@ use Tinify;
 use Tinify\Magento\Model\Config;
 
 use Magento\Catalog\Model\Product\Image;
-use Magento\Swatches\Model\Swatch;
 use Psr\Log\LoggerInterface as Logger;
 
 class OptimizableImage
@@ -38,7 +37,7 @@ class OptimizableImage
 
     public function optimize()
     {
-        if (!$this->optimizable()) {
+        if (!$this->isOptimizable()) {
             $this->logger->debug("Skipping {$this->getUnoptimizedPath()}.");
             return false;
         }
@@ -68,13 +67,10 @@ class OptimizableImage
         return true;
     }
 
-    public function optimizable()
+    protected function isOptimizable()
     {
         $type = $this->image->getDestinationSubdir();
-        return (
-            $type !== Swatch::SWATCH_IMAGE_NAME &&
-            $type !== Swatch::SWATCH_THUMBNAIL_NAME
-        );
+        return $this->config->isOptimizableType($type);
     }
 
     protected function configure()

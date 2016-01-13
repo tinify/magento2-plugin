@@ -20,6 +20,7 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
             "Magento\Framework\App\Config\MutableScopeConfigInterface"
         );
         $scopeConfig->setValue(Model\Config::KEY_PATH, "my_api_key");
+        $scopeConfig->setValue(Model\Config::TYPES_PATH . "/swatch", 0);
 
         $config = $this->getObjectManager()->get(
             "Tinify\Magento\Model\Config"
@@ -60,7 +61,7 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
         $this->assertEquals($this->pngOptimal, $this->dir->readFile($path));
     }
 
-    public function testSaveDoesNotCreateOptimizedSwatchVersion()
+    public function testSaveDoesNotCreateOptimizedVersionIfDisabled()
     {
         $this->image->setDestinationSubdir("swatch_thumb");
         $this->image->setBaseFile("example.png");
@@ -68,7 +69,7 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
 
         $sha = "d519570140157e41611e39513acca2c79ab89b301fcb5e76178db49bc8f26fab";
         $path = "catalog/product/optimized/d/5/{$sha}.png";
-        $this->assertEquals(false, $this->dir->isFile($path));
+        $this->assertFalse($this->dir->isFile($path));
     }
 
     public function testSaveDoesNotOverwriteOptimizedVersion()
