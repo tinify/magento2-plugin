@@ -106,7 +106,9 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
     public function testSaveDoesNotFailOnCompressionError()
     {
         AspectMock\Test::double("Tinify\Source", [
-            "fromBuffer" => function() { throw new Tinify\Exception("error"); }
+            "fromBuffer" => function () {
+                throw new Tinify\Exception("error");
+            }
         ]);
 
         $this->image->setDestinationSubdir("my_image_type");

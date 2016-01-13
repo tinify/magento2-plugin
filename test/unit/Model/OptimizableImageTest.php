@@ -237,7 +237,9 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
     {
         $error = new Tinify\Exception("error");
         AspectMock\Test::double("Tinify\Source", [
-            "fromBuffer" => function() use($error) { throw $error; }
+            "fromBuffer" => function () use ($error) {
+                throw $error;
+            }
         ]);
 
         $file = "catalog/product/cache/1/image/60x60/my_image.jpg";

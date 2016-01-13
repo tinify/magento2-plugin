@@ -56,7 +56,7 @@ class OptimizableImage
 
             try {
                 $result = Tinify\fromBuffer($source)->toBuffer();
-            } catch(Tinify\Exception $err) {
+            } catch (Tinify\Exception $err) {
                 $this->logger->error($err);
                 return false;
             }
