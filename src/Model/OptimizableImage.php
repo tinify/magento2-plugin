@@ -69,7 +69,22 @@ class OptimizableImage
 
     protected function isOptimizable()
     {
-        $type = $this->image->getDestinationSubdir();
+        switch (strtolower($this->image->getDestinationSubdir())) {
+            case "thumbnail":
+                $type = "thumbnail";
+                break;
+            case "small_image":
+                $type = "small";
+                break;
+            case "swatch_thumb":
+            case "swatch_image":
+                $type = "swatch";
+                break;
+            case "image":
+            default:
+                $type = "base";
+        }
+
         return $this->config->isOptimizableType($type);
     }
 

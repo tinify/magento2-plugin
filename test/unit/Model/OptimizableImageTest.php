@@ -145,12 +145,35 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
         $this->optimizableImage->optimize();
     }
 
-    public function testOptimizeReturnsIfImageIsNotOptimizable()
+    public function testOptimizeReturnsIfImageTypeIsNotOptimizable()
     {
         $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
 
         $this->config
+            ->expects($this->once())
             ->method("isOptimizableType")
+            ->with("base")
+            ->willReturn(false);
+
+        $this->config
+            ->method("getKey")
+            ->willReturn("my_valid_key");
+
+        $this->assertFalse($this->optimizableImage->optimize());
+    }
+
+    public function testOptimizeReturnsIfImageTypeWithAliasIsNotOptimizable()
+    {
+        $file = "catalog/product/cache/1/swatch_thumb/60x60/my_image.jpg";
+
+        $this->image
+            ->method("getDestinationSubdir")
+            ->willReturn("swatch_thumb");
+
+        $this->config
+            ->expects($this->once())
+            ->method("isOptimizableType")
+            ->with("swatch")
             ->willReturn(false);
 
         $this->config

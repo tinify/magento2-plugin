@@ -33,22 +33,6 @@ class Config
 
     public function isOptimizableType($type)
     {
-        switch (strtolower($type)) {
-            case "thumbnail":
-                $type = "thumbnail";
-                break;
-            case "small_image":
-                $type = "small";
-                break;
-            case "swatch_thumb":
-            case "swatch_image":
-                $type = "swatch";
-                break;
-            case "image":
-            default:
-                $type = "base";
-        }
-
         return $this->config->isSetFlag(self::TYPES_PATH . "/" . $type);
     }
 
