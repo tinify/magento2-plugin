@@ -45,6 +45,6 @@
 
   "autoload": {
     "files": ["registration.php"],
-    "psr-4": {"Tinify\\Magento\\": ""}
+    "psr-4": {"Tinify\\Magento\\": "src"}
   }
 }

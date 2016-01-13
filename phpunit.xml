@@ -10,8 +10,7 @@
     </testsuites>
     <filter>
         <whitelist>
-            <directory>Model</directory>
-            <directory>Plugin</directory>
+            <directory>src</directory>
         </whitelist>
     </filter>
 </phpunit>
