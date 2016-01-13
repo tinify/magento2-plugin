@@ -2,11 +2,11 @@
 
 namespace Tinify\Magento\Model;
 
-use Magento\Framework\App\ProductMetadataInterface;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Catalog\Model\Product\Media\ConfigInterface as MediaConfigInterface;
-use Magento\Framework\Filesystem;
+use Magento\Catalog\Model\Product\Media\ConfigInterface as MediaConfig;
+use Magento\Framework\App\Config\ScopeConfigInterface as ScopeConfig;
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\App\ProductMetadataInterface as MagentoInfo;
+use Magento\Framework\Filesystem;
 
 class Config
 {
@@ -18,9 +18,9 @@ class Config
     protected $mediaDirectory;
 
     public function __construct(
-        ProductMetadataInterface $magentoInfo,
-        ScopeConfigInterface $config,
-        MediaConfigInterface $mediaConfig,
+        MagentoInfo $magentoInfo,
+        ScopeConfig $config,
+        MediaConfig $mediaConfig,
         Filesystem $filesystem
     ) {
         $this->magentoInfo = $magentoInfo;

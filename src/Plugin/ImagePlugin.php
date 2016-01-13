@@ -3,6 +3,7 @@
 namespace Tinify\Magento\Plugin;
 
 use Tinify\Magento\Model\OptimizableImageFactory;
+
 use Magento\Catalog\Model\Product\Image;
 
 class ImagePlugin

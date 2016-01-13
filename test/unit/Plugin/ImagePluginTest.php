@@ -4,11 +4,6 @@ namespace Tinify\Magento\Plugin;
 
 class ImagePluginTest extends \Tinify\Magento\TestCase
 {
-    protected $image;
-    protected $optimizableImage;
-    protected $factory;
-    protected $plugin;
-
     protected function setUp()
     {
         $this->image = $this

@@ -2,8 +2,8 @@
 
 namespace Tinify\Magento\Model;
 
-use Magento\Framework\ObjectManagerInterface;
 use Magento\Catalog\Model\Product\Image;
+use Magento\Framework\ObjectManagerInterface as ObjectManager;
 
 class OptimizableImageFactory
 {
@@ -11,7 +11,7 @@ class OptimizableImageFactory
 
     protected $objectManager;
 
-    public function __construct(ObjectManagerInterface $objectManager)
+    public function __construct(ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
     }

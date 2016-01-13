@@ -4,13 +4,6 @@ namespace Tinify\Magento\Model;
 
 class ConfigTest extends \Tinify\Magento\TestCase
 {
-    protected $coreConfig;
-    protected $mediaConfig;
-    protected $mediaDir;
-    protected $filesystem;
-    protected $magentoInfo;
-    protected $config;
-
     protected function setUp()
     {
         $this->coreConfig = $this->getMock(

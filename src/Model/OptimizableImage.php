@@ -4,17 +4,21 @@ namespace Tinify\Magento\Model;
 
 use Tinify;
 use Tinify\Magento\Model\Config;
+
 use Magento\Catalog\Model\Product\Image;
 use Magento\Swatches\Model\Swatch;
+use Psr\Log\LoggerInterface as Logger;
 
 class OptimizableImage
 {
+    protected $logger;
     protected $config;
     protected $image;
     protected $configured = false;
 
-    public function __construct(Config $config, Image $image)
+    public function __construct(Logger $logger, Config $config, Image $image)
     {
+        $this->logger = $logger;
         $this->config = $config;
         $this->image = $image;
     }
@@ -35,10 +39,12 @@ class OptimizableImage
     public function optimize()
     {
         if (!$this->optimizable()) {
+            $this->logger->debug("Skipping {$this->getUnoptimizedPath()}.");
             return false;
         }
 
         if (!$this->configure()) {
+            $this->logger->debug("No API key configured.");
             return false;
         }
 
@@ -47,7 +53,16 @@ class OptimizableImage
 
         if (!$dir->isFile($path)) {
             $source = $dir->readFile($this->getUnoptimizedPath());
-            $dir->writeFile($path, Tinify\fromBuffer($source)->toBuffer());
+
+            try {
+                $result = Tinify\fromBuffer($source)->toBuffer();
+            } catch(Tinify\Exception $err) {
+                $this->logger->error($err);
+                return false;
+            }
+
+            $dir->writeFile($path, $result);
+            $this->logger->debug("Optimized {$this->getUnoptimizedPath()}.");
         }
 
         return true;

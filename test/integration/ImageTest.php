@@ -103,6 +103,18 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
         $this->assertEquals($image1->getUrl(), $image2->getUrl());
     }
 
+    public function testSaveDoesNotFailOnCompressionError()
+    {
+        AspectMock\Test::double("Tinify\Source", [
+            "fromBuffer" => function() { throw new Tinify\Exception("error"); }
+        ]);
+
+        $this->image->setDestinationSubdir("my_image_type");
+        $this->image->setBaseFile("example.png");
+        $this->image->saveFile();
+    }
+
+
     public function testGetUrlReturnsOptimizedVersion()
     {
         $this->image->setDestinationSubdir("my_image_type");

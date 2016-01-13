@@ -7,12 +7,12 @@ use Tinify;
 
 class OptimizableImageTest extends \Tinify\Magento\TestCase
 {
-    protected $config;
-    protected $image;
-    protected $optimizableImage;
-
     protected function setUp()
     {
+        $this->logger = $this->getMock(
+            "Psr\Log\LoggerInterface"
+        );
+
         $this->mediaDir = $this->getMock(
             "Magento\Framework\Filesystem\Directory\WriteInterface"
         );
@@ -50,6 +50,7 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
         $this->optimizableImage = $this->getObjectManager()->getObject(
             "Tinify\Magento\Model\OptimizableImage",
             [
+                "logger" => $this->logger,
                 "config" => $this->config,
                 "image" => $this->image,
             ]
@@ -120,6 +121,22 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
         $this->assertEquals(false, $this->optimizableImage->optimize());
     }
 
+    public function testOptimizeLogsMessageIfKeyIsUnset()
+    {
+        $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
+
+        $this->config
+            ->method("getKey")
+            ->willReturn("  ");
+
+        $this->logger
+            ->expects($this->once())
+            ->method("debug")
+            ->with("No API key configured.");
+
+        $this->optimizableImage->optimize();
+    }
+
     public function testOptimizeReturnsIfImageIsSwatch()
     {
         $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
@@ -128,11 +145,27 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
             ->method("getDestinationSubdir")
             ->willReturn("swatch_image");
 
-        $this->config
-            ->method("getKey")
-            ->willReturn("  ");
-
         $this->assertEquals(false, $this->optimizableImage->optimize());
+    }
+
+    public function testOptimizeLogsMessageIfImageIsSwatch()
+    {
+        $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
+
+        $this->image
+            ->method("getDestinationSubdir")
+            ->willReturn("swatch_image");
+
+        $this->image
+            ->method("getNewFile")
+            ->willReturn($file);
+
+        $this->logger
+            ->expects($this->once())
+            ->method("debug")
+            ->with("Skipping {$file}.");
+
+        $this->optimizableImage->optimize();
     }
 
     public function testOptimizeCompressesCachedFileIfKeyIsSet()
@@ -196,6 +229,35 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
         $this->mediaDir
             ->expects($this->never())
             ->method("writeFile");
+
+        $this->optimizableImage->optimize();
+    }
+
+    public function testOptimizeLogsExceptionOnCompressionError()
+    {
+        $error = new Tinify\Exception("error");
+        AspectMock\Test::double("Tinify\Source", [
+            "fromBuffer" => function() use($error) { throw $error; }
+        ]);
+
+        $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
+
+        $this->image
+            ->method("getNewFile")
+            ->willReturn($file);
+
+        $this->config
+            ->method("getKey")
+            ->willReturn("my_valid_key");
+
+        $path = $this->config->getMediaPath($file);
+        mkdir(dirname($path), 0777, true);
+        file_put_contents($path, "suboptimial image");
+
+        $this->logger
+            ->expects($this->once())
+            ->method("error")
+            ->with($error);
 
         $this->optimizableImage->optimize();
     }
