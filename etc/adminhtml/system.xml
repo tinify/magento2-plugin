@@ -12,7 +12,7 @@
                     <comment><![CDATA[Visit <a href="https://tinypng.com/developers" target="_blank">TinyPNG Developer section</a> to to get an API key.]]></comment>
                 </field>
             </group>
-            <group id="types" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="types" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Image Types to Compress</label>
                 <comment>Choose which generated image types should be optimized with TinyPNG or TinyJPG.</comment>
                 <field id="base" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
