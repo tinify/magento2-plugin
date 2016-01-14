@@ -18,18 +18,22 @@
                 <comment>Choose which generated image types should be optimized with TinyPNG or TinyJPG.</comment>
                 <field id="base" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Base Images</label>
+                    <comment>Large images on product pages.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="small" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Small Images</label>
+                    <comment>Smaller images on category pages, in lists of recently viewed products, new product lists, upsells, wish lists, etc.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="thumbnail" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Thumbnails</label>
+                    <comment>Thumbnail-sized images in product image galleries, sidebars, widgets, RSS feeds, etc.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="swatch" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Swatches</label>
+                    <comment>Small images used to select product attributes.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
