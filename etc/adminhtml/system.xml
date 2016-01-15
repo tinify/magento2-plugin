@@ -5,7 +5,7 @@
             <label>Image Compression</label>
             <tab>general</tab>
             <resource>Tinify_Compress_Images::tinify_compress_images</resource>
-            <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+            <group id="general" translate="label" type="text" expanded="1" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>Compression Settings</label>
                 <field id="key" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>TinyPNG API Key</label>
