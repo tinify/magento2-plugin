@@ -1,0 +1,4 @@
+.tinify-connection-status { padding: 0.7rem 0 0; }
+.tinify-connection-status:before { float: left; position: relative; top: -0.2rem; padding-right: 0.7rem; font-family: 'Admin Icons'; font-size: 1.8rem; }
+.tinify-connection-status.tinify-success:before { color: #79a22e; content: '\e62d'; }
+.tinify-connection-status.tinify-failure:before { color: #eb5202; content: '\e623'; }

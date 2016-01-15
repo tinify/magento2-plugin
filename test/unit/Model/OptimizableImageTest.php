@@ -110,7 +110,7 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
         $this->assertEquals($url, $this->optimizableImage->getUrl());
     }
 
-    public function testOptimizeReturnsIfKeyIsUnset()
+    public function testOptimizeReturnsIfUnconfigured()
     {
         $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
 
@@ -119,13 +119,13 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
             ->willReturn(true);
 
         $this->config
-            ->method("getKey")
-            ->willReturn("");
+            ->method("apply")
+            ->willReturn(false);
 
         $this->assertFalse($this->optimizableImage->optimize());
     }
 
-    public function testOptimizeLogsMessageIfKeyIsUnset()
+    public function testOptimizeLogsMessageIfUnconfigured()
     {
         $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
 
@@ -134,13 +134,13 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
             ->willReturn(true);
 
         $this->config
-            ->method("getKey")
-            ->willReturn("");
+            ->method("apply")
+            ->willReturn(false);
 
         $this->logger
             ->expects($this->once())
             ->method("debug")
-            ->with("No API key configured.");
+            ->with("API key not configured.");
 
         $this->optimizableImage->optimize();
     }
@@ -156,8 +156,8 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
             ->willReturn(false);
 
         $this->config
-            ->method("getKey")
-            ->willReturn("my_valid_key");
+            ->method("apply")
+            ->willReturn(true);
 
         $this->assertFalse($this->optimizableImage->optimize());
     }
@@ -177,8 +177,8 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
             ->willReturn(false);
 
         $this->config
-            ->method("getKey")
-            ->willReturn("my_valid_key");
+            ->method("apply")
+            ->willReturn(true);
 
         $this->assertFalse($this->optimizableImage->optimize());
     }
@@ -196,8 +196,8 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
             ->willReturn(false);
 
         $this->config
-            ->method("getKey")
-            ->willReturn("my_valid_key");
+            ->method("apply")
+            ->willReturn(true);
 
         $this->logger
             ->expects($this->once())
@@ -224,8 +224,8 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
             ->willReturn(true);
 
         $this->config
-            ->method("getKey")
-            ->willReturn("my_valid_key");
+            ->method("apply")
+            ->willReturn(true);
 
         $path = $this->config->getMediaPath($file);
         mkdir(dirname($path), 0777, true);
@@ -259,8 +259,8 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
             ->willReturn(true);
 
         $this->config
-            ->method("getKey")
-            ->willReturn("my_valid_key");
+            ->method("apply")
+            ->willReturn(true);
 
         $this->mediaDir
             ->method("isFile")
@@ -300,8 +300,8 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
             ->willReturn(true);
 
         $this->config
-            ->method("getKey")
-            ->willReturn("my_valid_key");
+            ->method("apply")
+            ->willReturn(true);
 
         $path = $this->config->getMediaPath($file);
         mkdir(dirname($path), 0777, true);

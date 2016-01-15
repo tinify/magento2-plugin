@@ -2,6 +2,8 @@
 
 namespace Tinify\Magento\Model;
 
+use Tinify;
+
 use Magento\Catalog\Model\Product\Media\ConfigInterface as MediaConfig;
 use Magento\Framework\App\Config\ScopeConfigInterface as ScopeConfig;
 use Magento\Framework\App\Filesystem\DirectoryList;
@@ -14,6 +16,7 @@ class Config
     const KEY_PATH = "tinify_compress_images/general/key";
     const TYPES_PATH = "tinify_compress_images/types";
 
+    protected $configured = false;
     protected $magentoInfo;
     protected $config;
     protected $mediaConfig;
@@ -31,22 +34,40 @@ class Config
         $this->mediaDirectory = $filesystem->getDirectoryWrite(DirectoryList::MEDIA);
     }
 
+    protected function getKey()
+    {
+        return trim($this->config->getValue(self::KEY_PATH));
+    }
+
+    public function hasKey()
+    {
+        return !empty($this->getKey());
+    }
+
     public function isOptimizableType($type)
     {
         return $this->config->isSetFlag(self::TYPES_PATH . "/" . $type);
     }
 
-    public function getKey()
+    public function apply()
     {
-        return trim($this->config->getValue(self::KEY_PATH));
-    }
+        if ($this->configured) {
+            return true;
+        }
 
-    public function getMagentoId()
-    {
+        $key = $this->getKey();
+        if (empty($key)) {
+            return false;
+        }
+
+        Tinify\setKey($key);
+
         $name = $this->magentoInfo->getName();
         $version = $this->magentoInfo->getVersion();
         $edition = $this->magentoInfo->getEdition();
-        return "{$name}/{$version} ({$edition})";
+        Tinify\setAppIdentifier("{$name}/{$version} ({$edition})");
+
+        return $this->configured = true;
     }
 
     public function getPathPrefix()

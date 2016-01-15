@@ -56,18 +56,35 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         return new MockObjectManager($this);
     }
 
+    protected function getProperty($object, $name)
+    {
+        $reflection = new \ReflectionClass($object);
+        $property = $reflection->getProperty($name);
+        $property->setAccessible(true);
+        return $property->getValue($object);
+    }
+
     protected function setProperty($object, $name, $value)
     {
         $reflection = new \ReflectionClass($object);
         $property = $reflection->getProperty($name);
         $property->setAccessible(true);
-        $property->setValue($object, $value);
+        return $property->setValue($object, $value);
+    }
+
+    protected function callMethod($object, $name)
+    {
+        $reflection = new \ReflectionClass($object);
+        $method = $reflection->getMethod($name);
+        $method->setAccessible(true);
+        return $method->invokeArgs($object, array_slice(func_get_args(), 2));
     }
 }
 
 abstract class IntegrationTestCase extends TestCase
 {
     protected static $imported;
+    protected $useRoot = false;
 
     protected function setUp()
     {
@@ -76,6 +93,11 @@ abstract class IntegrationTestCase extends TestCase
             if ($result !== 0) exit($result);
             self::$imported = true;
         }
+    }
+
+    protected function useFilesystemRoot()
+    {
+        $this->useRoot = true;
     }
 
     protected function loadArea($code)
@@ -100,7 +122,8 @@ abstract class IntegrationTestCase extends TestCase
 
         /* Overwrite all directories that are used by our module. A correct
            config path is required for a working object manager. */
-        $dirList = new DirectoryList($this->getVfs(), [
+
+        $dirList = new DirectoryList($this->useRoot ? BP : $this->getVfs(), [
             DirectoryList::CONFIG => ["path" => BP . "/app/etc"],
             DirectoryList::MEDIA  => ["path" => $this->getVfs() . "/media"],
         ]);
@@ -131,14 +154,18 @@ abstract class IntegrationTestCase extends TestCase
                     ],
                 ],
                 "modules" => [
+                    "Magento_Authorization" => 1,
                     "Magento_Backend" => 1,
-                    "Magento_Store" => 1,
-                    "Magento_Theme" => 1,
+                    "Magento_Config" => 1,
                     "Magento_Developer" => 1,
                     "Magento_MediaStorage" => 1,
+                    "Magento_Store" => 1,
+                    "Magento_Theme" => 1,
+                    "Magento_Translation" => 1,
+                    "Magento_Ui" => 1,
                     "Tinify_Compress_Images" => 1,
                 ],
-                ]
+            ]
         ];
 
         $objectManager = $factory->create($config);

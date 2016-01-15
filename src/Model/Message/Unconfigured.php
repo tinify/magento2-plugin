@@ -20,7 +20,7 @@ class Unconfigured implements MessageInterface
 
     public function isDisplayed()
     {
-        return empty($this->config->getKey());
+        return !$this->config->hasKey();
     }
 
     public function getIdentity()
@@ -33,7 +33,7 @@ class Unconfigured implements MessageInterface
         $url = $this->urlBuilder->getUrl("adminhtml/system_config/edit", [
             "section" => explode("/", Config::KEY_PATH)[0]
         ]);
-        return __('Configure <a href="%1">your TinyPNG API key</a> to start compressing images.', $url);
+        return __("Configure <a href=\"%1\">your TinyPNG API key</a> to start compressing images.", $url);
     }
 
     public function getSeverity()

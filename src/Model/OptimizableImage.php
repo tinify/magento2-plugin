@@ -13,7 +13,6 @@ class OptimizableImage
     protected $logger;
     protected $config;
     protected $image;
-    protected $configured = false;
 
     public function __construct(Logger $logger, Config $config, Image $image)
     {
@@ -42,8 +41,8 @@ class OptimizableImage
             return false;
         }
 
-        if (!$this->configure()) {
-            $this->logger->debug("No API key configured.");
+        if (!$this->config->apply()) {
+            $this->logger->debug("API key not configured.");
             return false;
         }
 
@@ -86,24 +85,6 @@ class OptimizableImage
         }
 
         return $this->config->isOptimizableType($type);
-    }
-
-    protected function configure()
-    {
-        if ($this->configured) {
-            return true;
-        }
-
-        $key = $this->config->getKey();
-        if (empty($key)) {
-            return false;
-        }
-
-        Tinify\setKey($key);
-        Tinify\setAppIdentifier($this->config->getMagentoId());
-        $this->configured = true;
-
-        return true;
     }
 
     protected function getOptimizedPath()

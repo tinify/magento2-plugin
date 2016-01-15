@@ -2,6 +2,8 @@
 
 namespace Tinify\Magento\Model;
 
+use Tinify;
+
 class ConfigTest extends \Tinify\Magento\TestCase
 {
     protected function setUp()
@@ -52,6 +54,26 @@ class ConfigTest extends \Tinify\Magento\TestCase
         );
     }
 
+    public function testHasKeyReturnsTrueIfKeyIsSet()
+    {
+        $this->coreConfig
+            ->method("getValue")
+            ->with("tinify_compress_images/general/key")
+            ->willReturn("  my_key  ");
+
+        $this->assertTrue($this->config->HasKey());
+    }
+
+    public function testHasKeyReturnsFalseIfKeyIsUnset()
+    {
+        $this->coreConfig
+            ->method("getValue")
+            ->with("tinify_compress_images/general/key")
+            ->willReturn("  ");
+
+        $this->assertFalse($this->config->HasKey());
+    }
+
     public function testIsOptimizableTypeReturnsTrueIfTypeIsEnabled()
     {
         $this->coreConfig
@@ -72,23 +94,56 @@ class ConfigTest extends \Tinify\Magento\TestCase
         $this->assertFalse($this->config->isOptimizableType("thumbnail"));
     }
 
-    public function testGetKeyReturnsTrimmedKey()
+    public function testApplySetsTrimmedKey()
     {
         $my_key = "there_are_many_like_it_but_this_one_is_mine";
 
         $this->coreConfig
             ->method("getValue")
             ->with("tinify_compress_images/general/key")
-            ->willReturn("  " . $my_key . "   ");
+            ->willReturn("  " . $my_key . "  ");
 
-        $this->assertEquals($my_key, $this->config->getKey());
+        $this->config->apply();
+        $this->assertEquals($my_key, $this->getProperty("Tinify\Tinify", "key"));
     }
 
-    public function testGetMagentoIdReturnsVersionString()
+    public function testApplySetsVersionString()
     {
         $id = "Magento/{$this->magentoInfo->getVersion()} (Community)";
 
-        $this->assertEquals($id, $this->config->getMagentoId());
+        $this->config->apply();
+        $this->assertEquals($id, $this->getProperty("Tinify\Tinify", "appIdentifier"));
+    }
+
+    public function testApplyReturnsTrueIfApplied()
+    {
+        $this->coreConfig
+            ->method("getValue")
+            ->with("tinify_compress_images/general/key")
+            ->willReturn("  my_key  ");
+
+        $this->assertTrue($this->config->apply());
+    }
+
+    public function testApplyReturnsTrueIfPreviouslyApplied()
+    {
+        $this->coreConfig
+            ->method("getValue")
+            ->with("tinify_compress_images/general/key")
+            ->willReturn("  my_key  ");
+
+        $this->config->apply();
+        $this->assertTrue($this->config->apply());
+    }
+
+    public function testApplyReturnsFalseIfKeyIsUnset()
+    {
+        $this->coreConfig
+            ->method("getValue")
+            ->with("tinify_compress_images/general/key")
+            ->willReturn("   ");
+
+        $this->assertFalse($this->config->apply());
     }
 
     public function testGetPathPrefixReturnsPrefixString()
