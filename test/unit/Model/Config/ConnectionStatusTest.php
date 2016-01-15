@@ -120,6 +120,39 @@ class ConnectionStatusTest extends \Tinify\Magento\TestCase
         $this->status->update();
     }
 
+    public function testUpdateClearsError()
+    {
+        Tinify\setKey("my_key");
+
+        $this->config
+            ->method("apply")
+            ->willReturn(true);
+
+        AspectMock\Test::double("Tinify\Client", [
+            "request" => function () {
+                throw new Tinify\ClientException("error");
+            }
+        ]);
+
+        $this->cache
+            ->method("load")
+            ->willReturn(serialize([
+                "status" => 2,
+                "last_error" => "bad error",
+            ]));
+
+        $this->callMethod($this->status, "load");
+
+        $this->cache
+            ->expects($this->once())
+            ->method("save")
+            ->with(serialize([
+                "status" => 1,
+            ]), "tinify_status");
+
+        $this->status->update();
+    }
+
     public function testUpdateSetsFailureData()
     {
         Tinify\setKey("my_key");
@@ -186,6 +219,20 @@ class ConnectionStatusTest extends \Tinify\Magento\TestCase
             ]), "tinify_status");
 
         $this->status->update();
+    }
+
+    public function testUpdateCompressionCountUpdatesCount()
+    {
+        Tinify\Tinify::setCompressionCount(18);
+
+        $this->cache
+            ->expects($this->once())
+            ->method("save")
+            ->with(serialize([
+                "compression_count" => 18,
+            ]), "tinify_status");
+
+        $this->status->updateCompressionCount();
     }
 
     public function testLoadIgnoresBotchedData()

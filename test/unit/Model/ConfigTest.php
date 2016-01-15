@@ -43,6 +43,12 @@ class ConfigTest extends \Tinify\Magento\TestCase
             "Magento\Framework\App\ProductMetadata"
         );
 
+        $this->statusFactory = $this
+            ->getMockBuilder("Tinify\Magento\Model\Config\ConnectionStatusFactory")
+            ->disableOriginalConstructor()
+            ->setMethods(["create"])
+            ->getMock();
+
         $this->config = $this->getObjectManager()->getObject(
             "Tinify\Magento\Model\Config",
             [
@@ -50,6 +56,7 @@ class ConfigTest extends \Tinify\Magento\TestCase
                 "config" => $this->coreConfig,
                 "mediaConfig" => $this->mediaConfig,
                 "filesystem" => $this->filesystem,
+                "statusFactory" => $this->statusFactory,
             ]
         );
     }
@@ -144,6 +151,20 @@ class ConfigTest extends \Tinify\Magento\TestCase
             ->willReturn("   ");
 
         $this->assertFalse($this->config->apply());
+    }
+
+    public function testGetStatusReturnsConnectionStatus()
+    {
+        $status = $this
+            ->getMockBuilder("Tinify\Magento\Model\Config\ConnectionStatus")
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->statusFactory
+            ->method("create")
+            ->willReturn($status);
+
+        $this->assertEquals($status, $this->config->getStatus());
     }
 
     public function testGetPathPrefixReturnsPrefixString()

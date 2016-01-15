@@ -54,6 +54,7 @@ class OptimizableImage
 
             try {
                 $result = Tinify\fromBuffer($source)->toBuffer();
+                $this->config->getStatus()->updateCompressionCount();
             } catch (Tinify\Exception $err) {
                 $this->logger->error($err);
                 return false;

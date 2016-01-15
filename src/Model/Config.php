@@ -3,6 +3,7 @@
 namespace Tinify\Magento\Model;
 
 use Tinify;
+use Tinify\Magento\Model\Config\ConnectionStatusFactory;
 
 use Magento\Catalog\Model\Product\Media\ConfigInterface as MediaConfig;
 use Magento\Framework\App\Config\ScopeConfigInterface as ScopeConfig;
@@ -21,17 +22,20 @@ class Config
     protected $config;
     protected $mediaConfig;
     protected $mediaDirectory;
+    protected $statusFactory;
 
     public function __construct(
         MagentoInfo $magentoInfo,
         ScopeConfig $config,
         MediaConfig $mediaConfig,
-        Filesystem $filesystem
+        Filesystem $filesystem,
+        ConnectionStatusFactory $statusFactory
     ) {
         $this->magentoInfo = $magentoInfo;
         $this->config = $config;
         $this->mediaConfig = $mediaConfig;
         $this->mediaDirectory = $filesystem->getDirectoryWrite(DirectoryList::MEDIA);
+        $this->statusFactory = $statusFactory;
     }
 
     protected function getKey()
@@ -68,6 +72,11 @@ class Config
         Tinify\setAppIdentifier("{$name}/{$version} ({$edition})");
 
         return $this->configured = true;
+    }
+
+    public function getStatus()
+    {
+        return $this->statusFactory->create();
     }
 
     public function getPathPrefix()

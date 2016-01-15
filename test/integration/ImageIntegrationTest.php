@@ -11,6 +11,8 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
     {
         parent::setUp();
 
+        $this->loadArea("adminhtml");
+
         $logHandler = $this->getObjectManager()->get(
             "Magento\Framework\Logger\Handler\System"
         );
@@ -59,6 +61,21 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
         $sha = "d519570140157e41611e39513acca2c79ab89b301fcb5e76178db49bc8f26fab";
         $path = "catalog/product/optimized/d/5/{$sha}.png";
         $this->assertEquals($this->pngOptimal, $this->dir->readFile($path));
+    }
+
+    public function testSaveUpdatesCompressionCount()
+    {
+        Tinify\Tinify::setCompressionCount(6);
+
+        $this->image->setDestinationSubdir("my_image_type");
+        $this->image->setBaseFile("example.png");
+        $this->image->saveFile();
+
+        $status = $this->getObjectManager()->get(
+            "Tinify\Magento\Model\Config\ConnectionStatus"
+        );
+
+        $this->assertEquals(6, $status->getCompressionCount());
     }
 
     public function testSaveDoesNotCreateOptimizedVersionIfDisabled()

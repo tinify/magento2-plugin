@@ -17,10 +17,19 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
             "Magento\Framework\Filesystem\Directory\WriteInterface"
         );
 
+        $this->status = $this
+            ->getMockBuilder("Tinify\Magento\Model\Config\ConnectionStatus")
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->config = $this
             ->getMockBuilder("Tinify\Magento\Model\Config")
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->config
+            ->method("getStatus")
+            ->willReturn($this->status);
 
         $this->config
             ->method("getMediaPath")
@@ -238,6 +247,37 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
             ->expects($this->once())
             ->method("writeFile")
             ->with($path, "optimal file binary");
+
+        $this->optimizableImage->optimize();
+    }
+
+    public function testOptimizeUpdatesCompressionCountIfKeyIsSet()
+    {
+        $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
+
+        $this->image
+            ->method("getNewFile")
+            ->willReturn($file);
+
+        $this->config
+            ->method("getPathPrefix")
+            ->willReturn("catalog/product/optimized");
+
+        $this->config
+            ->method("isOptimizableType")
+            ->willReturn(true);
+
+        $this->config
+            ->method("apply")
+            ->willReturn(true);
+
+        $path = $this->config->getMediaPath($file);
+        mkdir(dirname($path), 0777, true);
+        file_put_contents($path, "suboptimial image");
+
+        $this->status
+            ->expects($this->once())
+            ->method("updateCompressionCount");
 
         $this->optimizableImage->optimize();
     }

@@ -124,8 +124,10 @@ abstract class IntegrationTestCase extends TestCase
            config path is required for a working object manager. */
 
         $dirList = new DirectoryList($this->useRoot ? BP : $this->getVfs(), [
-            DirectoryList::CONFIG => ["path" => BP . "/app/etc"],
-            DirectoryList::MEDIA  => ["path" => $this->getVfs() . "/media"],
+            DirectoryList::CONFIG  => ["path" => BP . "/app/etc"],
+            DirectoryList::MEDIA   => ["path" => $this->getVfs() . "/media"],
+            DirectoryList::VAR_DIR => ["path" => $this->getVfs() . "/var"],
+            DirectoryList::CACHE   => ["path" => BP . "/cache"],
         ]);
 
         Autoload\Populator::populateMappings(

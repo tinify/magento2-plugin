@@ -34,12 +34,19 @@ class ConnectionStatus
             try {
                 Tinify\validate();
                 $this->setStatus(self::SUCCESS);
+                $this->setLastError(null);
             } catch (\Exception $err) {
                 $this->setStatus(self::FAILURE);
                 $this->setLastError($err->getMessage());
             }
             $this->setCompressionCount(Tinify\getCompressionCount());
         }
+        $this->save();
+    }
+
+    public function updateCompressionCount()
+    {
+        $this->setCompressionCount(Tinify\getCompressionCount());
         $this->save();
     }
 
@@ -56,6 +63,8 @@ class ConnectionStatus
     {
         if (isset($status)) {
             $this->data["status"] = $status;
+        } else {
+            unset($this->data["status"]);
         }
     }
 
@@ -70,6 +79,8 @@ class ConnectionStatus
     {
         if (isset($error)) {
             $this->data["last_error"] = $error;
+        } else {
+            unset($this->data["last_error"]);
         }
     }
 
@@ -84,6 +95,8 @@ class ConnectionStatus
     {
         if (isset($count)) {
             $this->data["compression_count"] = $count;
+        } else {
+            unset($this->data["compression_count"]);
         }
     }
 
