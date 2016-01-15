@@ -17,7 +17,7 @@ matrix:
 before_script: composer install
 script:
 - vendor/bin/phpunit
-- vendor/bin/phpcs --standard=PSR2 src test/integration test/unit
+- vendor/bin/phpcs --standard=phpcs.xml .
 notifications:
   email: false
   slack:

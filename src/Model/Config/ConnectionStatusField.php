@@ -47,6 +47,7 @@ class ConnectionStatusField extends Field
         return "<div class=\"" . implode(" ", $classes) . "\">{$element->getElementHtml()}</div>";
     }
 
+    // @codingStandardsIgnoreLine - Magento violates underscore prefix rule.
     protected function _getElementHtml(AbstractElement $element)
     {
         return $this->getElementHtml($element);
