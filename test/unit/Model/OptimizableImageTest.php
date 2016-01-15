@@ -90,8 +90,8 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
         mkdir(dirname($path), 0777, true);
         file_put_contents($path, "suboptimial image");
 
-        $url = "http://localhost/pub/media/catalog/product/optimized/" .
-            "5/5/556481349e6e45717387cfe9a53981057e4e9be90532c7cf2d0aa7aaeb5eaf52.jpg";
+        $sha = "556481349e6e45717387cfe9a53981057e4e9be90532c7cf2d0aa7aaeb5eaf52";
+        $url = "http://localhost/pub/media/catalog/product/optimized/5/5/{$sha}/my_image.jpg";
         $this->assertEquals($url, $this->optimizableImage->getUrl());
     }
 
@@ -240,8 +240,8 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
         mkdir(dirname($path), 0777, true);
         file_put_contents($path, "suboptimial image");
 
-        $path = "catalog/product/optimized/" .
-            "5/5/556481349e6e45717387cfe9a53981057e4e9be90532c7cf2d0aa7aaeb5eaf52.jpg";
+        $sha = "556481349e6e45717387cfe9a53981057e4e9be90532c7cf2d0aa7aaeb5eaf52";
+        $path = "catalog/product/optimized/5/5/{$sha}/my_image.jpg";
 
         $this->mediaDir
             ->expects($this->once())
@@ -310,8 +310,8 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
         mkdir(dirname($path), 0777, true);
         file_put_contents($path, "suboptimial image");
 
-        $path = "catalog/product/optimized/" .
-            "5/5/556481349e6e45717387cfe9a53981057e4e9be90532c7cf2d0aa7aaeb5eaf52.jpg";
+        $sha = "556481349e6e45717387cfe9a53981057e4e9be90532c7cf2d0aa7aaeb5eaf52";
+        $path = "catalog/product/optimized/{$sha}/my_image.jpg";
 
         $this->mediaDir
             ->expects($this->never())

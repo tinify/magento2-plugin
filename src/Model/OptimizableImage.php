@@ -90,8 +90,9 @@ class OptimizableImage
 
     protected function getOptimizedPath()
     {
-        $file = $this->getUnoptimizedHash() . "." . $this->getExtension();
-        return implode("/", [$this->config->getPathPrefix(), $file[0], $file[1], $file]);
+        $hash = $this->getUnoptimizedHash();
+        $file = $this->getFilename();
+        return implode("/", [$this->config->getPathPrefix(), $hash[0], $hash[1], $hash, $file]);
     }
 
     protected function getUnoptimizedPath()
@@ -105,8 +106,8 @@ class OptimizableImage
         return hash_file("sha256", $file);
     }
 
-    protected function getExtension()
+    protected function getFilename()
     {
-        return pathinfo($this->getUnoptimizedPath(), PATHINFO_EXTENSION);
+        return basename($this->getUnoptimizedPath());
     }
 }

@@ -59,7 +59,7 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
         $this->image->saveFile();
 
         $sha = "d519570140157e41611e39513acca2c79ab89b301fcb5e76178db49bc8f26fab";
-        $path = "catalog/product/optimized/d/5/{$sha}.png";
+        $path = "catalog/product/optimized/d/5/{$sha}/example.png";
         $this->assertEquals($this->pngOptimal, $this->dir->readFile($path));
     }
 
@@ -85,14 +85,14 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
         $this->image->saveFile();
 
         $sha = "d519570140157e41611e39513acca2c79ab89b301fcb5e76178db49bc8f26fab";
-        $path = "catalog/product/optimized/d/5/{$sha}.png";
+        $path = "catalog/product/optimized/d/5/{$sha}/example.png";
         $this->assertFalse($this->dir->isFile($path));
     }
 
     public function testSaveDoesNotOverwriteOptimizedVersion()
     {
         $sha = "d519570140157e41611e39513acca2c79ab89b301fcb5e76178db49bc8f26fab";
-        $path = "catalog/product/optimized/d/5/{$sha}.png";
+        $path = "catalog/product/optimized/d/5/{$sha}/example.png";
         $this->dir->writeFile($path, "previous binary");
 
         $this->image->setDestinationSubdir("my_image_type");
@@ -155,7 +155,7 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
         $this->image->saveFile();
 
         $sha = "d519570140157e41611e39513acca2c79ab89b301fcb5e76178db49bc8f26fab";
-        $url = "http://localhost:3000/pub/media/catalog/product/optimized/d/5/{$sha}.png";
+        $url = "http://localhost:3000/pub/media/catalog/product/optimized/d/5/{$sha}/example.png";
         $this->assertEquals($url, $this->image->getUrl());
     }
 
