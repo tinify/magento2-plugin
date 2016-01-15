@@ -117,7 +117,7 @@ class ConfigIntegrationTest extends \Tinify\Magento\IntegrationTestCase
                 '<div class="tinify-connection-status tinify-failure">' .
                     '<div class="control-value">API connection unsuccessful.</div>' .
                 '</div>' .
-                '<p class="note"><span>Last error: help an error</span></p>' .
+                '<p class="note"><span>Error: help an error</span></p>' .
             '</td>',
             $this->callMethod($status, "_renderValue", $label)
         );

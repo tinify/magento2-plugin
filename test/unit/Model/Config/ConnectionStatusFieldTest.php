@@ -78,7 +78,7 @@ class ConnectionStatusFieldTest extends \Tinify\Magento\TestCase
         );
 
         $this->assertEquals(
-            "Last error: Credentials are invalid (HTTP 401/Unauthorized)",
+            "Error: Credentials are invalid (HTTP 401/Unauthorized)",
             $this->label->getComment()
         );
     }

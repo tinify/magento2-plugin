@@ -38,7 +38,7 @@ class ConnectionStatusField extends Field
                 $classes[] = "tinify-failure";
                 $element->setValue(__("API connection unsuccessful."));
                 $element->setComment(__(
-                    "Last error: %1",
+                    "Error: %1",
                     $this->status->getLastError()
                 ));
                 break;
