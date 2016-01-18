@@ -2,13 +2,25 @@
 
 # Compress JPEG & PNG images for Magento 2
 
-Make your webshop faster by compressing your JPEG and PNG images.
+Make your Magento 2 store faster by compressing your JPEG and PNG images.
 
 This plugin automatically optimizes your images by integrating with the
-popular image compression services TinyJPG and TinyPNG. You can download the
-plugin from Magento Connect.
+popular image compression services TinyJPG and TinyPNG.
 
 Learn more about TinyJPG and TinyPNG at https://tinypng.com/.
+
+## Installation
+
+This Magento 2 module can be installed with Composer
+(https://getcomposer.org/download/). Once the new Magento 2 Marketplace is
+lauched, it will also be featured there.
+
+From the command line, do the following in your Magento 2 installation directory:
+
+```
+composer require tinify/magento2
+php bin/magento setup:upgrade
+```
 
 ## Contact us
 
@@ -29,13 +41,13 @@ composer install
 vendor/bin/phpunit
 ```
 
-### Installing plugin from Git in Magento
+### Installing development version of plugin
 
 Make sure to set `"minimum-stability": "dev"` in `composer.json` before you start.
 
 ```
 composer config repositories.tinify vcs https://github.com/tinify/magento2-plugin
-composer require tinify/magento2
+composer require tinify/magento2:dev-master
 bin/magento setup:upgrade
 ```
 
