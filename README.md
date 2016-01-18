@@ -28,6 +28,12 @@ On average JPEG images are compressed by 40-60% and PNG images by 50-80%
 without visible loss in quality. Your webshop will load faster for your
 visitors, and you’ll save storage space and bandwidth!
 
+## Screenshot
+
+Example of plugin configuration in Magento 2:
+
+![Compress JPEG & PNG images configuration screen](https://raw.githubusercontent.com/tinify/magento2-plugin/screenshots/magento2-config.jpg)
+
 ## Getting started
 
 Obtain your free API key from https://tinypng.com/developers. The first 500
