@@ -3,7 +3,7 @@
     <preference for="Magento\Catalog\Model\Product\Media\ConfigInterface" type="Magento\Catalog\Model\Product\Media\Config"/>
 
     <type name="Magento\Catalog\Model\Product\Image">
-        <plugin name="Tinify_Compress_Images::optimize_catalog_images" type="Tinify\Magento\Plugin\ImagePlugin" sortOrder="10"/>
+        <plugin name="Tinify_CompressImages::optimize_catalog_images" type="Tinify\Magento\Plugin\ImagePlugin" sortOrder="10"/>
     </type>
 
     <type name="Tinify\Magento\Model\OptimizableImage">

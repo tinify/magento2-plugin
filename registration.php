@@ -2,6 +2,6 @@
 
 Magento\Framework\Component\ComponentRegistrar::register(
     Magento\Framework\Component\ComponentRegistrar::MODULE,
-    "Tinify_Compress_Images",
+    "Tinify_CompressImages",
     __DIR__
 );

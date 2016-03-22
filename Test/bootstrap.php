@@ -6,6 +6,7 @@ use Magento\Framework\Autoload;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\ObjectManagerFactory;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\App\State;
 use Magento\Framework\Component\ComponentRegistrar;
 use Magento\Framework\Filesystem\DriverPool;
 use Magento\Framework\Filesystem\Driver\File;
@@ -89,7 +90,7 @@ abstract class IntegrationTestCase extends TestCase
     protected function setUp()
     {
         if (!self::$imported) {
-            exec("mysql -u root < test/fixtures/magento.sql", $output, $result);
+            exec("mysql -u root < Test/fixtures/magento.sql", $output, $result);
             if ($result !== 0) exit($result);
             self::$imported = true;
         }
@@ -139,6 +140,7 @@ abstract class IntegrationTestCase extends TestCase
         );
 
         $config = [
+            State::PARAM_MODE => State::MODE_DEVELOPER,
             "MAGE_CONFIG" => [
                 "db" => [
                     "connection" => [
@@ -160,12 +162,13 @@ abstract class IntegrationTestCase extends TestCase
                     "Magento_Backend" => 1,
                     "Magento_Config" => 1,
                     "Magento_Developer" => 1,
+                    "Magento_Email" => 1,
                     "Magento_MediaStorage" => 1,
                     "Magento_Store" => 1,
                     "Magento_Theme" => 1,
                     "Magento_Translation" => 1,
                     "Magento_Ui" => 1,
-                    "Tinify_Compress_Images" => 1,
+                    "Tinify_CompressImages" => 1,
                 ],
             ]
         ];

@@ -3,5 +3,5 @@
     <rule ref="PSR2"/>
     <exclude-pattern>app</exclude-pattern>
     <exclude-pattern>vendor</exclude-pattern>
-    <exclude-pattern>test/bootstrap.php</exclude-pattern>
+    <exclude-pattern>Test/bootstrap.php</exclude-pattern>
 </ruleset>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="test/bootstrap.php" colors="true" backupGlobals="false">
+<phpunit bootstrap="Test/bootstrap.php" colors="true" backupGlobals="false">
     <testsuites>
         <testsuite name="Tinify Magento Plugin Integration Test Suite">
-            <directory suffix="Test.php">test/integration</directory>
+            <directory suffix="Test.php">Test/integration</directory>
         </testsuite>
         <testsuite name="Tinify Magento Plugin Unit Test Suite">
-            <directory suffix="Test.php">test/unit</directory>
+            <directory suffix="Test.php">Test/unit</directory>
         </testsuite>
     </testsuites>
     <filter>
