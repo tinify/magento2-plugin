@@ -5,12 +5,12 @@
 Make your Magento 2 store faster by compressing your JPEG and PNG images.
 
 This plugin automatically optimizes your images by integrating with the
-popular image compression services TinyJPG and TinyPNG.
+popular image compression services TinyJPG and TinyPNG. Learn more about
+these services on https://tinypng.com/.
 
-Learn more about TinyJPG and TinyPNG at https://tinypng.com/.
-
-Do you use Magento 1? Install our Magento 1 plugin instead:
-https://www.magentocommerce.com/magento-connect/compress-jpeg-png-images.html
+Do you use Magento 1? Download the extension for
+[Magento 1 Community Edition](https://www.magentocommerce.com/magento-connect/compress-jpeg-png-images.html)
+or [Magento 1 Enterprise Edition](https://tig.nl/image-optimization-magento-extension-enterprise-edition/) instead.
 
 ## How does it work?
 
