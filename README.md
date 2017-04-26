@@ -12,6 +12,18 @@ Do you use Magento 1? Download the extension for
 [Magento 1 Community Edition](https://www.magentocommerce.com/magento-connect/compress-jpeg-png-images.html)
 or [Magento 1 Enterprise Edition](https://tig.nl/image-optimization-magento-extension-enterprise-edition/) instead.
 
+## Important notice
+
+The latest release of Magento 2.1.6 includes a completely
+rearranged folder structure for the product image cache. We regret that the
+current version 1.1.0 of this extension is not yet compatible with the changes.
+
+Magento reports many users with similar issues in that images are not showing
+and have posted a notice in their [2.1.6 release notes](http://devdocs.magento.com/guides/v2.1/release-notes/ReleaseNotes2.1.6CE.html#catalog) along with 2 solutions, but be
+warned these workarounds do not solve the issue either.
+We hope to solve this showstopper and will post updates here as soon as we
+have more positive news.
+
 ## How does it work?
 
 When you view a product in your webshop, Magento creates different image sizes
