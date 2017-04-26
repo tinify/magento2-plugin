@@ -8,14 +8,14 @@ This plugin automatically optimizes your images by integrating with the
 popular image compression services TinyJPG and TinyPNG. Learn more about
 these services on https://tinypng.com/.
 
-**Important notice: The latest release of Magento 2.1.6 includes a completely
+***Important notice: The latest release of Magento 2.1.6 includes a completely
 rearranged folder structure for the product image cache. We regret that the
 current version 1.1.0 of this extension is not yet compatible with the changes.
 Magento reports many users with similar issues in that images are not showing
 and have posted a notice in their [2.1.6 release notes](http://devdocs.magento.com/guides/v2.1/release-notes/ReleaseNotes2.1.6CE.html#catalog) along with 2 solutions, but be
 warned these workarounds do not solve the issue either. We hope to solve this
 showstopper and will post updates here as soon as we
-have more positive news.**
+have more positive news.***
 
 Do you use Magento 1? Download the extension for
 [Magento 1 Community Edition](https://www.magentocommerce.com/magento-connect/compress-jpeg-png-images.html)
