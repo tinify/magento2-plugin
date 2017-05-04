@@ -97,7 +97,9 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
 
     public function testGetUrlReturnsUrlBasedOnHashIfFileExistsWithMagento216()
     {
-        if (!class_exists("Magento\Catalog\Model\View\Asset\Image")) return;
+        if (!class_exists("Magento\Catalog\Model\View\Asset\Image")) {
+            return;
+        }
 
         $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
 
@@ -121,7 +123,7 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
 
         $this->image
             ->method("getNewFile")
-            ->willReturn(NULL);
+            ->willReturn(null);
 
         $this->config
             ->method("getPathPrefix")
@@ -166,7 +168,9 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
 
     public function testGetUrlReturnsOriginalUrlIfFileDoesNotExistWithMagento216()
     {
-        if (!class_exists("Magento\Catalog\Model\View\Asset\Image")) return;
+        if (!class_exists("Magento\Catalog\Model\View\Asset\Image")) {
+            return;
+        }
 
         $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
 
@@ -190,7 +194,7 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
 
         $this->image
             ->method("getNewFile")
-            ->willReturn(NULL);
+            ->willReturn(null);
 
         $this->config
             ->method("getPathPrefix")

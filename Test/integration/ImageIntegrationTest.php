@@ -34,15 +34,43 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
         $this->dir->create();
 
         $this->pngSuboptimal = file_get_contents(__DIR__ . "/../fixtures/example.png");
-        $this->dir->writeFile("catalog/product/example.png", $this->pngSuboptimal);
-        $this->dir->writeFile("catalog/product/cache/b743fee1b82927b4bcb0975ffb187478/example.png", $this->pngSuboptimal);
-        $this->dir->writeFile("catalog/product/cache/510aa0b6ef97a8d76ecfc57ebaf8e364/example.png", $this->pngSuboptimal);
+
+        $this->dir->writeFile(
+            "catalog/product/example.png",
+            $this->pngSuboptimal
+        );
+
+        $this->dir->writeFile(
+            "catalog/product/cache/b743fee1b82927b4bcb0975ffb187478/example.png",
+            $this->pngSuboptimal
+        );
+
+        $this->dir->writeFile(
+            "catalog/product/cache/510aa0b6ef97a8d76ecfc57ebaf8e364/example.png",
+            $this->pngSuboptimal
+        );
 
         $this->jpgSuboptimal = file_get_contents(__DIR__ . "/../fixtures/example.jpg");
-        $this->dir->writeFile("catalog/product/example.jpg", $this->jpgSuboptimal);
-        $this->dir->writeFile("catalog/product/cache/b743fee1b82927b4bcb0975ffb187478/example.jpg", $this->jpgSuboptimal);
-        $this->dir->writeFile("catalog/product/cache/9b43bba90e608d30cac05a77864b5fa3/example.jpg", $this->jpgSuboptimal);
-        $this->dir->writeFile("catalog/product/cache/984a5bf2c84db04bc2e299406efcf53b/example.jpg", $this->jpgSuboptimal);
+
+        $this->dir->writeFile(
+            "catalog/product/example.jpg",
+            $this->jpgSuboptimal
+        );
+
+        $this->dir->writeFile(
+            "catalog/product/cache/b743fee1b82927b4bcb0975ffb187478/example.jpg",
+            $this->jpgSuboptimal
+        );
+
+        $this->dir->writeFile(
+            "catalog/product/cache/9b43bba90e608d30cac05a77864b5fa3/example.jpg",
+            $this->jpgSuboptimal
+        );
+
+        $this->dir->writeFile(
+            "catalog/product/cache/984a5bf2c84db04bc2e299406efcf53b/example.jpg",
+            $this->jpgSuboptimal
+        );
 
         $this->pngOptimal = file_get_contents(__DIR__ . "/../fixtures/example-tiny.png");
         AspectMock\Test::double("Tinify\Source", [
