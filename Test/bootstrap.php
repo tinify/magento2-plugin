@@ -27,9 +27,34 @@ $kernel->init([
     "includePaths" => [__DIR__ . "/../vendor/tinify"],
 ]);
 
-/* TODO: Figure out how this class should be autoloaded? */
-require_once(BP . "/lib/internal/Cm/Cache/Backend/File.php");
+if (file_exists(BP . "/lib/internal/Cm/Cache/Backend/File.php")) {
+    /* TODO: Figure out how this class should be autoloaded? */
+    /* This used to be necessary for Magento 2.0.x. */
+    require_once(BP . "/lib/internal/Cm/Cache/Backend/File.php");
+}
+
 require_once(BP . "/app/functions.php");
+
+class FixedImage extends \Magento\Framework\Image
+{
+    public function save($destination = null, $newFileName = null)
+    {
+        /* Work around a bug where a / is accidentally prepended to absolute
+           paths in Magento\Catalog\Model\View\Asset\Image::getRelativePath() */
+        $destination = str_replace("/vfs:", "vfs:", $destination);
+        parent::save($destination, $newFileName);
+    }
+}
+
+class FixedAssetImage extends \Magento\Catalog\Model\View\Asset\Image
+{
+    public function getPath()
+    {
+        /* Work around a bug where a / is accidentally prepended to absolute
+           paths in Magento\Catalog\Model\View\Asset\Image::getRelativePath() */
+        return str_replace("/vfs:", "vfs:", parent::getPath());
+    }
+}
 
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
@@ -113,6 +138,13 @@ abstract class IntegrationTestCase extends TestCase
 
         $state->setAreaCode($code);
         $this->getObjectManager()->configure($configLoader->load($code));
+
+        $this->getObjectManager()->configure(array(
+            "preferences" => array(
+                "Magento\Framework\Image" => "Tinify\Magento\FixedImage",
+                "Magento\Catalog\Model\View\Asset\Image" => "Tinify\Magento\FixedAssetImage",
+            )
+        ));
     }
 
     protected function constructObjectManager()
@@ -161,6 +193,7 @@ abstract class IntegrationTestCase extends TestCase
                     "Magento_Authorization" => 1,
                     "Magento_Backend" => 1,
                     "Magento_Config" => 1,
+                    "Magento_Catalog" => 1,
                     "Magento_Developer" => 1,
                     "Magento_Email" => 1,
                     "Magento_MediaStorage" => 1,

@@ -11,6 +11,7 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
     {
         parent::setUp();
 
+        $this->useFilesystemRoot();
         $this->loadArea("adminhtml");
 
         $logHandler = $this->getObjectManager()->get(
@@ -18,11 +19,12 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
         );
         $this->setProperty($logHandler, "url", $this->getVfs() . "/system.log");
 
-        $scopeConfig = $this->getObjectManager()->get(
-            "Magento\Framework\App\Config\MutableScopeConfigInterface"
+        $this->dbConfig = $this->getObjectManager()->get(
+            "Magento\Config\Model\ResourceModel\Config"
         );
-        $scopeConfig->setValue(Model\Config::KEY_PATH, "my_api_key");
-        $scopeConfig->setValue(Model\Config::TYPES_PATH . "/swatch", 0);
+
+        $this->dbConfig->saveConfig(Model\Config::KEY_PATH, "my_api_key", "default", 0);
+        $this->dbConfig->saveConfig(Model\Config::TYPES_PATH . "/swatch", 0, "default", 0);
 
         $config = $this->getObjectManager()->get(
             "Tinify\Magento\Model\Config"
@@ -33,9 +35,14 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
 
         $this->pngSuboptimal = file_get_contents(__DIR__ . "/../fixtures/example.png");
         $this->dir->writeFile("catalog/product/example.png", $this->pngSuboptimal);
+        $this->dir->writeFile("catalog/product/cache/b743fee1b82927b4bcb0975ffb187478/example.png", $this->pngSuboptimal);
+        $this->dir->writeFile("catalog/product/cache/510aa0b6ef97a8d76ecfc57ebaf8e364/example.png", $this->pngSuboptimal);
 
         $this->jpgSuboptimal = file_get_contents(__DIR__ . "/../fixtures/example.jpg");
         $this->dir->writeFile("catalog/product/example.jpg", $this->jpgSuboptimal);
+        $this->dir->writeFile("catalog/product/cache/b743fee1b82927b4bcb0975ffb187478/example.jpg", $this->jpgSuboptimal);
+        $this->dir->writeFile("catalog/product/cache/9b43bba90e608d30cac05a77864b5fa3/example.jpg", $this->jpgSuboptimal);
+        $this->dir->writeFile("catalog/product/cache/984a5bf2c84db04bc2e299406efcf53b/example.jpg", $this->jpgSuboptimal);
 
         $this->pngOptimal = file_get_contents(__DIR__ . "/../fixtures/example-tiny.png");
         AspectMock\Test::double("Tinify\Source", [
@@ -161,16 +168,19 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
 
     public function testGetUrlReturnsCachedVersionWhenKeyIsUnset()
     {
+        $this->dbConfig->saveConfig(Model\Config::KEY_PATH, "  ", "default", 0);
+
+        /* Clear cache. */
         $this->getObjectManager()->get(
-            "Magento\Framework\App\Config\MutableScopeConfigInterface"
-        )->setValue(Model\Config::KEY_PATH, "  ");
+            "Magento\Framework\App\Config"
+        )->clean();
 
         $this->image->setDestinationSubdir("my_image_type");
         $this->image->setBaseFile("example.png");
         $this->image->saveFile();
 
-        $url = "http://localhost:3000/pub/media/catalog/product/cache/1/" .
-            "my_image_type/beff4985b56e3afdbeabfc89641a4582/example.png";
+        $url = "http://localhost:3000/pub/media/catalog/product/cache/" .
+            "b743fee1b82927b4bcb0975ffb187478/example.png";
         $this->assertEquals($url, $this->image->getUrl());
     }
 }

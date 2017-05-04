@@ -97,7 +97,22 @@ class OptimizableImage
 
     protected function getUnoptimizedPath()
     {
-        return $this->image->getNewFile();
+        /* In Magento <= 2.1.5, getNewFile() returned the path of the
+           unoptimized cached image, as opposed to getBaseFile(), which
+           returned the original.
+
+           As of Magento 2.1.6, the implemention has changed and getNewFile()
+           is always undefined - we now need to access the underlying image
+           asset. Unfortunately this is private, so we need to hack around it. */
+        $path = $this->image->getNewFile();
+
+        if (!$path) {
+            $abs = $this->getImageAsset()->getPath();
+            $dir = $this->config->getMediaDirectory();
+            $path = $dir->getRelativePath($abs);
+        }
+
+        return $path;
     }
 
     protected function getUnoptimizedHash()
@@ -109,5 +124,17 @@ class OptimizableImage
     protected function getFilename()
     {
         return basename($this->getUnoptimizedPath());
+    }
+
+    protected function getImageAsset()
+    {
+        /* TODO: This is a giant hack because Magento does not yet expose
+           the image asset property. See:
+           https://github.com/magento/magento2/pull/9503 */
+        $class = new \ReflectionClass($this->image);
+        $property = $class->getParentClass()->getProperty("imageAsset");
+        $property->setAccessible(true);
+
+        return $property->getValue($this->image);
     }
 }

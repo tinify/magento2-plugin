@@ -95,6 +95,51 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
         $this->assertEquals($url, $this->optimizableImage->getUrl());
     }
 
+    public function testGetUrlReturnsUrlBasedOnHashIfFileExistsWithMagento216()
+    {
+        if (!class_exists("Magento\Catalog\Model\View\Asset\Image")) return;
+
+        $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
+
+        $imageAsset = $this
+            ->getMockBuilder("Magento\Catalog\Model\View\Asset\Image")
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $imageAsset
+            ->method("getPath")
+            ->willReturn("vfs://root/media/catalog/product/cache/1/image/60x60/my_image.jpg");
+
+        $this->mediaDir
+            ->method("getRelativePath")
+            ->willReturn("catalog/product/cache/1/image/60x60/my_image.jpg");
+
+        $class = new \ReflectionClass($this->image);
+        $property = $class->getParentClass()->getProperty("imageAsset");
+        $property->setAccessible(true);
+        $property->setValue($this->image, $imageAsset);
+
+        $this->image
+            ->method("getNewFile")
+            ->willReturn(NULL);
+
+        $this->config
+            ->method("getPathPrefix")
+            ->willReturn("catalog/product/optimized");
+
+        $this->mediaDir
+            ->method("isFile")
+            ->willReturn(true);
+
+        $path = $this->config->getMediaPath($file);
+        mkdir(dirname($path), 0777, true);
+        file_put_contents($path, "suboptimial image");
+
+        $sha = "556481349e6e45717387cfe9a53981057e4e9be90532c7cf2d0aa7aaeb5eaf52";
+        $url = "http://localhost/pub/media/catalog/product/optimized/5/5/{$sha}/my_image.jpg";
+        $this->assertEquals($url, $this->optimizableImage->getUrl());
+    }
+
     public function testGetUrlReturnsOriginalUrlIfFileDoesNotExist()
     {
         $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
@@ -102,6 +147,50 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
         $this->image
             ->method("getNewFile")
             ->willReturn($file);
+
+        $this->config
+            ->method("getPathPrefix")
+            ->willReturn("catalog/product/optimized");
+
+        $this->mediaDir
+            ->method("isFile")
+            ->willReturn(false);
+
+        $path = $this->config->getMediaPath($file);
+        mkdir(dirname($path), 0777, true);
+        file_put_contents($path, "suboptimial image");
+
+        $url = "http://localhost/pub/media/catalog/product/cache/1/image/60x60/my_image.jpg";
+        $this->assertEquals($url, $this->optimizableImage->getUrl());
+    }
+
+    public function testGetUrlReturnsOriginalUrlIfFileDoesNotExistWithMagento216()
+    {
+        if (!class_exists("Magento\Catalog\Model\View\Asset\Image")) return;
+
+        $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
+
+        $imageAsset = $this
+            ->getMockBuilder("Magento\Catalog\Model\View\Asset\Image")
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $imageAsset
+            ->method("getPath")
+            ->willReturn("vfs://root/media/catalog/product/cache/1/image/60x60/my_image.jpg");
+
+        $this->mediaDir
+            ->method("getRelativePath")
+            ->willReturn("catalog/product/cache/1/image/60x60/my_image.jpg");
+
+        $class = new \ReflectionClass($this->image);
+        $property = $class->getParentClass()->getProperty("imageAsset");
+        $property->setAccessible(true);
+        $property->setValue($this->image, $imageAsset);
+
+        $this->image
+            ->method("getNewFile")
+            ->willReturn(NULL);
 
         $this->config
             ->method("getPathPrefix")
@@ -158,6 +247,10 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
     {
         $file = "catalog/product/cache/1/image/60x60/my_image.jpg";
 
+        $this->image
+            ->method("getNewFile")
+            ->willReturn($file);
+
         $this->config
             ->expects($this->once())
             ->method("isOptimizableType")
@@ -174,6 +267,10 @@ class OptimizableImageTest extends \Tinify\Magento\TestCase
     public function testOptimizeReturnsIfImageTypeWithAliasIsNotOptimizable()
     {
         $file = "catalog/product/cache/1/swatch_thumb/60x60/my_image.jpg";
+
+        $this->image
+            ->method("getNewFile")
+            ->willReturn($file);
 
         $this->image
             ->method("getDestinationSubdir")
