@@ -9,15 +9,14 @@ php:
 env:
 - MAGENTO_VERSION=2.0.13
 - MAGENTO_VERSION=2.1.6
-matrix:
-  exclude:
-  - php: 5.5
-    env: MAGENTO_VERSION=2.1.6
 before_install:
 - sudo apt-get update -qq
 - sudo apt-get remove -y -qq --purge mysql-common mysql-server-5.5 mysql-server-core-5.5 mysql-client-5.5 mysql-client-core-5.5
 - sudo apt-get install -y -qq mysql-server-5.6 mysql-client-5.6
 matrix:
+  exclude:
+  - php: 5.5
+    env: MAGENTO_VERSION=2.1.6
   allow_failures:
   - php: hhvm
   - php: nightly
