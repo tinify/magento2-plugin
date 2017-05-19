@@ -46,13 +46,15 @@ class FixedImage extends \Magento\Framework\Image
     }
 }
 
-class FixedAssetImage extends \Magento\Catalog\Model\View\Asset\Image
-{
-    public function getPath()
+if (class_exists("Magento\Catalog\Model\View\Asset\Image")) {
+    class FixedAssetImage extends \Magento\Catalog\Model\View\Asset\Image
     {
-        /* Work around a bug where a / is accidentally prepended to absolute
-           paths in Magento\Catalog\Model\View\Asset\Image::getRelativePath() */
-        return str_replace("/vfs:", "vfs:", parent::getPath());
+        public function getPath()
+        {
+            /* Work around a bug where a / is accidentally prepended to absolute
+               paths in Magento\Catalog\Model\View\Asset\Image::getRelativePath() */
+            return str_replace("/vfs:", "vfs:", parent::getPath());
+        }
     }
 }
 
@@ -139,12 +141,20 @@ abstract class IntegrationTestCase extends TestCase
         $state->setAreaCode($code);
         $this->getObjectManager()->configure($configLoader->load($code));
 
-        $this->getObjectManager()->configure(array(
-            "preferences" => array(
-                "Magento\Framework\Image" => "Tinify\Magento\FixedImage",
-                "Magento\Catalog\Model\View\Asset\Image" => "Tinify\Magento\FixedAssetImage",
-            )
-        ));
+        if (class_exists("Magento\Catalog\Model\View\Asset\Image")) {
+            $this->getObjectManager()->configure(array(
+                "preferences" => array(
+                    "Magento\Framework\Image" => "Tinify\Magento\FixedImage",
+                    "Magento\Catalog\Model\View\Asset\Image" => "Tinify\Magento\FixedAssetImage",
+                )
+            ));
+        } else {
+            $this->getObjectManager()->configure(array(
+                "preferences" => array(
+                    "Magento\Framework\Image" => "Tinify\Magento\FixedImage",
+                )
+            ));
+        }
     }
 
     protected function constructObjectManager()

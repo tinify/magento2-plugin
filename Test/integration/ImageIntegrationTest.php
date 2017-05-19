@@ -35,11 +35,31 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
 
         $this->pngSuboptimal = file_get_contents(__DIR__ . "/../fixtures/example.png");
 
+        $this->dir->create("catalog/product/cache/1/my_image_type");
+
         $this->dir->writeFile(
             "catalog/product/example.png",
             $this->pngSuboptimal
         );
 
+        /* Magento 2.0.x */
+        $this->dir->create(
+            "catalog/product/cache/1/my_image_type/beff4985b56e3afdbeabfc89641a4582"
+        );
+
+        $this->dir->create(
+            "catalog/product/cache/1/swatch_thumb/beff4985b56e3afdbeabfc89641a4582"
+        );
+
+        $this->dir->create(
+            "catalog/product/cache/1/my_small_image1/beff4985b56e3afdbeabfc89641a4582"
+        );
+
+        $this->dir->create(
+            "catalog/product/cache/1/my_small_image2/beff4985b56e3afdbeabfc89641a4582"
+        );
+
+        /* Magento 2.1.x */
         $this->dir->writeFile(
             "catalog/product/cache/b743fee1b82927b4bcb0975ffb187478/example.png",
             $this->pngSuboptimal
@@ -198,17 +218,30 @@ class ImageIntegrationTest extends \Tinify\Magento\IntegrationTestCase
     {
         $this->dbConfig->saveConfig(Model\Config::KEY_PATH, "  ", "default", 0);
 
-        /* Clear cache. */
-        $this->getObjectManager()->get(
+        $config = $this->getObjectManager()->get(
             "Magento\Framework\App\Config"
-        )->clean();
+        );
+
+        if (method_exists($config, "clean")) {
+            /* Clear config cache if possible. */
+            $config->clean();
+        } else {
+            $this->getObjectManager()->get(
+                "Magento\Framework\App\Config\ScopePool"
+            )->clean();
+        }
 
         $this->image->setDestinationSubdir("my_image_type");
         $this->image->setBaseFile("example.png");
         $this->image->saveFile();
 
-        $url = "http://localhost:3000/pub/media/catalog/product/cache/" .
+        /* Magento 2.0.x */
+        $url1 = "http://localhost:3000/pub/media/catalog/product/cache/" .
+            "1/my_image_type/beff4985b56e3afdbeabfc89641a4582/example.png";
+
+        /* Magento 2.1.x */
+        $url2 = "http://localhost:3000/pub/media/catalog/product/cache/" .
             "b743fee1b82927b4bcb0975ffb187478/example.png";
-        $this->assertEquals($url, $this->image->getUrl());
+        $this->assertContains($this->image->getUrl(), [$url1, $url2]);
     }
 }
