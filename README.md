@@ -8,18 +8,18 @@ This plugin automatically optimizes your images by integrating with the
 popular image compression services TinyJPG and TinyPNG. Learn more about
 these services on https://tinypng.com/.
 
-***Important notice: The latest release of Magento 2.1.6 includes a completely
-different way of generating product images in the cache folder. Magento also
-reports many users with issues in that images are not showing and have posted a
-notice in their [2.1.6 release notes](http://devdocs.magento.com/guides/v2.1/release-notes/ReleaseNotes2.1.6CE.html#catalog)
-along with 2 solutions. We regret that the current version 1.1.0 of this
-extension is also not yet compatible with these extensive changes. For the time
-being you can solve this by installing the latest dev-master version with the
-instructions shown at the [bottom of this page](#installing-development-version-of-plugin).
-Also be warned when flushing the image cache in Magento 2.1.6, you will most
-likely need to regenerate a lot of missing images in the cache again afterwards
-with the catalog:images:resize script from Magento. We hope to release the new
-version of the extension with backwards compatibility soon.***
+***Important notice: Magento 2.1.6 includes a different way of generating
+product images in the cache folder. Magento reports many users with issues in
+that images are not showing and have posted a notice in their 
+[2.1.6 release notes](http://devdocs.magento.com/guides/v2.1/release-notes/ReleaseNotes2.1.6CE.html#catalog)
+along with 2 solutions. Be warned when flushing the image cache in Magento
+2.1.6: you will most likely need to regenerate a lot of missing images in the
+cache again afterwards with the catalog:images:resize script and this will
+take a lot of time. For fresh installs of this extension we recommend you
+temporarily suspend optimization when regenerating the cache. This can be done
+by setting the 4 image sizes to “No” on the configuration screen. Afterwards
+you can set the image sizes back to "Yes" to reenable image optimization for
+normal operation.***
 
 Do you use Magento 1? Download the extension for
 [Magento 1 Community Edition](https://www.magentocommerce.com/magento-connect/compress-jpeg-png-images.html)
