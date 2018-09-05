@@ -132,7 +132,15 @@ class OptimizableImage
            the image asset property. See:
            https://github.com/magento/magento2/pull/9503 */
         $class = new \ReflectionClass($this->image);
-        $property = $class->getParentClass()->getProperty("imageAsset");
+
+        /* Some extensions subclass the image class, so we need find the parent
+               class that has the imageAsset property */
+        $parent = $class->getParentClass();
+        while (!$parent->hasProperty("imageAsset")) {
+            $parent = $parent->getParentClass();
+        }
+
+        $property = $parent->getProperty("imageAsset");
         $property->setAccessible(true);
 
         return $property->getValue($this->image);
