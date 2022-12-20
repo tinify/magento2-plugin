@@ -40,7 +40,7 @@ class Config
 
     protected function getKey()
     {
-        return trim($this->config->getValue(self::KEY_PATH));
+        return trim((string) $this->config->getValue(self::KEY_PATH));
     }
 
     public function hasKey()
